@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ValoPlayBook.API/ValoPlayBook.API.csproj" />
+  <Project Path="ValoPlayBook.Core/ValoPlayBook.Core.csproj" />
+  <Project Path="ValoPlayBook.Data/ValoPlayBook.Data.csproj" />
+</Solution>
