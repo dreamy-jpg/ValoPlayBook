@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValoPlayBook.Data.Data;
@@ -11,9 +12,11 @@ using ValoPlayBook.Data.Data;
 namespace ValoPlayBook.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260419163228_AddIsAttackerToStepPosition")]
+    partial class AddIsAttackerToStepPosition
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,14 +225,8 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<int>("AgentId")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("Angle")
-                        .HasColumnType("double precision");
-
                     b.Property<int>("DurationSteps")
                         .HasColumnType("integer");
-
-                    b.Property<double?>("Length")
-                        .HasColumnType("double precision");
 
                     b.Property<double?>("Radius")
                         .HasColumnType("double precision");
@@ -237,17 +234,11 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<double?>("Rotation")
                         .HasColumnType("double precision");
 
-                    b.Property<double?>("Width")
-                        .HasColumnType("double precision");
-
                     b.Property<double?>("X")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("Y")
                         .HasColumnType("double precision");
-
-                    b.Property<int>("ZoneType")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

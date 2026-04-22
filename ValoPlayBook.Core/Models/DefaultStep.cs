@@ -9,5 +9,8 @@
 
         public Default Default { get; set; } = null!;
         public ICollection<StepPosition> Positions { get; set; } = new List<StepPosition>();
+
+        // Новая коллекция: способности, активируемые на этом шаге
+        public ICollection<StepAbility> StepAbilities { get; set; } = new List<StepAbility>();
     }
 }

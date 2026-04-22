@@ -15,6 +15,7 @@ namespace ValoPlayBook.Data.Data
         public DbSet<DefaultStep> DefaultSteps { get; set; }
         public DbSet<StepPosition> StepPositions { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<StepAbility> StepAbilities { get; set; } // новая таблица
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

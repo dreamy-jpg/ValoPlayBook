@@ -31,6 +31,9 @@ namespace ValoPlayBook.API.Controllers
                 .Include(d => d.Steps)
                     .ThenInclude(s => s.Positions)
                         .ThenInclude(p => p.Agent)
+                .Include(d => d.Steps)
+                    .ThenInclude(s => s.StepAbilities)
+                        .ThenInclude(sa => sa.Ability)
                 .AsQueryable();
 
             if (mapId.HasValue)
@@ -62,6 +65,10 @@ namespace ValoPlayBook.API.Controllers
                 .Include(d => d.Steps)
                     .ThenInclude(s => s.Positions)
                         .ThenInclude(p => p.Agent)
+                .Include(d => d.Steps)
+                    .ThenInclude(s => s.StepAbilities)
+                        .ThenInclude(sa => sa.Ability)
+                            .ThenInclude(a => a.Agent)
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (defaultEntity == null)
@@ -101,11 +108,31 @@ namespace ValoPlayBook.API.Controllers
                     Comment = s.Comment,
                     Positions = s.Positions.Select(p => new PositionDto
                     {
+                        Id = p.Id,
                         AgentId = p.AgentId,
                         AgentName = p.Agent.Name,
                         X = p.X,
                         Y = p.Y,
-                        Rotation = p.Rotation
+                        Rotation = p.Rotation,
+                        IsAttacker = p.IsAttacker
+                    }).ToList(),
+                    Abilities = s.StepAbilities.Select(sa => new StepAbilityDto
+                    {
+                        Id = sa.Id,
+                        ActivationStepId = sa.ActivationStepId,
+                        AbilityId = sa.AbilityId,
+                        AbilityName = sa.Ability?.Name ?? "Unknown",
+                        AgentId = sa.AgentId,
+                        AgentName = sa.Ability?.Agent?.Name ?? "Unknown",
+                        X = sa.X,
+                        Y = sa.Y,
+                        Rotation = sa.Rotation,
+                        ZoneType = sa.ZoneType.ToString(),
+                        Radius = sa.Radius,
+                        Length = sa.Length,
+                        Width = sa.Width,
+                        Angle = sa.Angle,
+                        DurationSteps = sa.DurationSteps
                     }).ToList()
                 }).ToList()
             };
