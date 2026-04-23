@@ -1,0 +1,20 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://localhost:7166',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/avatars': {                  // новый прокси для загруженных файлов
+        target: 'https://localhost:7166',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
+})
