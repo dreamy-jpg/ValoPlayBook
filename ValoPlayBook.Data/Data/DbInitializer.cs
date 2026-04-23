@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ValoPlayBook.Data.Data;
+using ValoPlayBook.Core.Models;
 
 namespace ValoPlayBook.Data.Data
 {
@@ -9,15 +9,31 @@ namespace ValoPlayBook.Data.Data
         {
             context.Database.Migrate();
 
-            // Закомментируй эту проверку перед первым запуском, чтобы сид выполнился
-            if (context.Teams.Any() || context.Maps.Any() || context.Agents.Any())
-                return;
-
             SeedTeams(context);
             SeedMaps(context);
             SeedAgents(context);
             SeedAbilities(context);
+            SeedUsers(context);        // <-- новый вызов
             SeedDefaults(context);
+
+            context.SaveChanges();
+        }
+
+        private static void SeedUsers(AppDbContext context)
+        {
+            // Создаём администратора, если таблица пользователей пуста
+            if (!context.Users.Any())
+            {
+                var adminUser = new User
+                {
+                    Email = "W@M",
+                    Username = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("better_call_saul"), // В реальном проекте пароль должен быть сложнее
+                    Role = "Admin",
+                    CreatedAt = DateTime.UtcNow
+                };
+                context.Users.Add(adminUser);
+            }
         }
     }
 }

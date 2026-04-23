@@ -18,6 +18,8 @@ namespace ValoPlayBook.Core.Models
         public string? YoutubeUrl { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public int? CreatedByUserId { get; set; }
+        public User? CreatedByUser { get; set; }
 
         public Team Team { get; set; } = null!;
         public Map Map { get; set; } = null!;

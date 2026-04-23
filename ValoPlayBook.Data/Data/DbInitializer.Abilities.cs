@@ -7,72 +7,96 @@ namespace ValoPlayBook.Data.Data
     {
         private static void SeedAbilities(AppDbContext context)
         {
-            var brimstone = context.Agents.First(a => a.Name == "Brimstone");
-            var omen = context.Agents.First(a => a.Name == "Omen");
-            var sova = context.Agents.First(a => a.Name == "Sova");
-            var jett = context.Agents.First(a => a.Name == "Jett");
-            var killjoy = context.Agents.First(a => a.Name == "Killjoy");
-            var raze = context.Agents.First(a => a.Name == "Raze");
-            var cypher = context.Agents.First(a => a.Name == "Cypher");
-            var fade = context.Agents.First(a => a.Name == "Fade");
-            var reyna = context.Agents.First(a => a.Name == "Reyna");
-            var sage = context.Agents.First(a => a.Name == "Sage");
+            // Получаем агентов (безопасно, т.к. они уже должны быть в контексте)
+            var brimstone = context.Agents.Local.FirstOrDefault(a => a.Name == "Brimstone")
+                            ?? context.Agents.First(a => a.Name == "Brimstone");
+            var omen = context.Agents.Local.FirstOrDefault(a => a.Name == "Omen")
+                       ?? context.Agents.First(a => a.Name == "Omen");
+            var sova = context.Agents.Local.FirstOrDefault(a => a.Name == "Sova")
+                       ?? context.Agents.First(a => a.Name == "Sova");
+            var jett = context.Agents.Local.FirstOrDefault(a => a.Name == "Jett")
+                       ?? context.Agents.First(a => a.Name == "Jett");
+            var killjoy = context.Agents.Local.FirstOrDefault(a => a.Name == "Killjoy")
+                          ?? context.Agents.First(a => a.Name == "Killjoy");
+            var raze = context.Agents.Local.FirstOrDefault(a => a.Name == "Raze")
+                       ?? context.Agents.First(a => a.Name == "Raze");
+            var cypher = context.Agents.Local.FirstOrDefault(a => a.Name == "Cypher")
+                         ?? context.Agents.First(a => a.Name == "Cypher");
+            var fade = context.Agents.Local.FirstOrDefault(a => a.Name == "Fade")
+                       ?? context.Agents.First(a => a.Name == "Fade");
+            var reyna = context.Agents.Local.FirstOrDefault(a => a.Name == "Reyna")
+                        ?? context.Agents.First(a => a.Name == "Reyna");
+            var sage = context.Agents.Local.FirstOrDefault(a => a.Name == "Sage")
+                       ?? context.Agents.First(a => a.Name == "Sage");
 
-            var abilities = new Ability[]
+            // Структура: (агент, название способности, тип, максимальные заряды)
+            var abilityData = new (Agent agent, string name, string type, int maxCharges)[]
             {
                 // Brimstone
-                new Ability { AgentId = brimstone.Id, Name = "Incendiary", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = brimstone.Id, Name = "Stim Beacon", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = brimstone.Id, Name = "Sky Smoke", Type = "Signature", MaxCharges = 3 },
-                new Ability { AgentId = brimstone.Id, Name = "Orbital Strike", Type = "Ultimate", MaxCharges = 1 },
+                (brimstone, "Incendiary", "Basic", 1),
+                (brimstone, "Stim Beacon", "Basic", 2),
+                (brimstone, "Sky Smoke", "Signature", 3),
+                (brimstone, "Orbital Strike", "Ultimate", 1),
                 // Omen
-                new Ability { AgentId = omen.Id, Name = "Shrouded Step", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = omen.Id, Name = "Paranoia", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = omen.Id, Name = "Dark Cover", Type = "Signature", MaxCharges = 2 },
-                new Ability { AgentId = omen.Id, Name = "From the Shadows", Type = "Ultimate", MaxCharges = 1 },
+                (omen, "Shrouded Step", "Basic", 2),
+                (omen, "Paranoia", "Basic", 1),
+                (omen, "Dark Cover", "Signature", 2),
+                (omen, "From the Shadows", "Ultimate", 1),
                 // Sova
-                new Ability { AgentId = sova.Id, Name = "Owl Drone", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = sova.Id, Name = "Shock Bolt", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = sova.Id, Name = "Recon Bolt", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = sova.Id, Name = "Hunter's Fury", Type = "Ultimate", MaxCharges = 1 },
+                (sova, "Owl Drone", "Basic", 1),
+                (sova, "Shock Bolt", "Basic", 2),
+                (sova, "Recon Bolt", "Signature", 1),
+                (sova, "Hunter's Fury", "Ultimate", 1),
                 // Jett
-                new Ability { AgentId = jett.Id, Name = "Cloudburst", Type = "Basic", MaxCharges = 3 },
-                new Ability { AgentId = jett.Id, Name = "Updraft", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = jett.Id, Name = "Tailwind", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = jett.Id, Name = "Blade Storm", Type = "Ultimate", MaxCharges = 1 },
+                (jett, "Cloudburst", "Basic", 3),
+                (jett, "Updraft", "Basic", 2),
+                (jett, "Tailwind", "Signature", 1),
+                (jett, "Blade Storm", "Ultimate", 1),
                 // Killjoy
-                new Ability { AgentId = killjoy.Id, Name = "Nanoswarm", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = killjoy.Id, Name = "Alarmbot", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = killjoy.Id, Name = "Turret", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = killjoy.Id, Name = "Lockdown", Type = "Ultimate", MaxCharges = 1 },
+                (killjoy, "Nanoswarm", "Basic", 2),
+                (killjoy, "Alarmbot", "Basic", 1),
+                (killjoy, "Turret", "Signature", 1),
+                (killjoy, "Lockdown", "Ultimate", 1),
                 // Raze
-                new Ability { AgentId = raze.Id, Name = "Boom Bot", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = raze.Id, Name = "Blast Pack", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = raze.Id, Name = "Paint Shells", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = raze.Id, Name = "Showstopper", Type = "Ultimate", MaxCharges = 1 },
+                (raze, "Boom Bot", "Basic", 1),
+                (raze, "Blast Pack", "Basic", 2),
+                (raze, "Paint Shells", "Signature", 1),
+                (raze, "Showstopper", "Ultimate", 1),
                 // Cypher
-                new Ability { AgentId = cypher.Id, Name = "Trapwire", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = cypher.Id, Name = "Cyber Cage", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = cypher.Id, Name = "Spycam", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = cypher.Id, Name = "Neural Theft", Type = "Ultimate", MaxCharges = 1 },
+                (cypher, "Trapwire", "Basic", 2),
+                (cypher, "Cyber Cage", "Basic", 2),
+                (cypher, "Spycam", "Signature", 1),
+                (cypher, "Neural Theft", "Ultimate", 1),
                 // Fade
-                new Ability { AgentId = fade.Id, Name = "Prowler", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = fade.Id, Name = "Seize", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = fade.Id, Name = "Haunt", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = fade.Id, Name = "Nightfall", Type = "Ultimate", MaxCharges = 1 },
+                (fade, "Prowler", "Basic", 2),
+                (fade, "Seize", "Basic", 1),
+                (fade, "Haunt", "Signature", 1),
+                (fade, "Nightfall", "Ultimate", 1),
                 // Reyna
-                new Ability { AgentId = reyna.Id, Name = "Leer", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = reyna.Id, Name = "Devour", Type = "Signature", MaxCharges = 2 },
-                new Ability { AgentId = reyna.Id, Name = "Dismiss", Type = "Signature", MaxCharges = 2 },
-                new Ability { AgentId = reyna.Id, Name = "Empress", Type = "Ultimate", MaxCharges = 1 },
+                (reyna, "Leer", "Basic", 2),
+                (reyna, "Devour", "Signature", 2),
+                (reyna, "Dismiss", "Signature", 2),
+                (reyna, "Empress", "Ultimate", 1),
                 // Sage
-                new Ability { AgentId = sage.Id, Name = "Barrier Orb", Type = "Basic", MaxCharges = 1 },
-                new Ability { AgentId = sage.Id, Name = "Slow Orb", Type = "Basic", MaxCharges = 2 },
-                new Ability { AgentId = sage.Id, Name = "Healing Orb", Type = "Signature", MaxCharges = 1 },
-                new Ability { AgentId = sage.Id, Name = "Resurrection", Type = "Ultimate", MaxCharges = 1 },
+                (sage, "Barrier Orb", "Basic", 1),
+                (sage, "Slow Orb", "Basic", 2),
+                (sage, "Healing Orb", "Signature", 1),
+                (sage, "Resurrection", "Ultimate", 1),
             };
-            context.Abilities.AddRange(abilities);
-            context.SaveChanges();
+
+            foreach (var (agent, abilityName, type, maxCharges) in abilityData)
+            {
+                if (!context.Abilities.Any(a => a.Name == abilityName && a.AgentId == agent.Id))
+                {
+                    context.Abilities.Add(new Ability
+                    {
+                        AgentId = agent.Id,
+                        Name = abilityName,
+                        Type = type,
+                        MaxCharges = maxCharges
+                    });
+                }
+            }
         }
     }
 }

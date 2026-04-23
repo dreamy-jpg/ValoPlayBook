@@ -1,4 +1,5 @@
-﻿using ValoPlayBook.Core.Models;
+﻿using System.Linq;
+using ValoPlayBook.Core.Models;
 
 namespace ValoPlayBook.Data.Data
 {
@@ -6,14 +7,15 @@ namespace ValoPlayBook.Data.Data
     {
         private static void SeedTeams(AppDbContext context)
         {
-            var teams = new Team[]
-            {
-                new Team { Name = "Fnatic", Region = "EMEA" },
-                new Team { Name = "Sentinels", Region = "Americas" },
-                new Team { Name = "Paper Rex", Region = "Pacific" }
-            };
-            context.Teams.AddRange(teams);
-            context.SaveChanges();
+            // Проверяем наличие каждой команды отдельно
+            if (!context.Teams.Any(t => t.Name == "Fnatic"))
+                context.Teams.Add(new Team { Name = "Fnatic", Region = "EMEA" });
+
+            if (!context.Teams.Any(t => t.Name == "Sentinels"))
+                context.Teams.Add(new Team { Name = "Sentinels", Region = "Americas" });
+
+            if (!context.Teams.Any(t => t.Name == "Paper Rex"))
+                context.Teams.Add(new Team { Name = "Paper Rex", Region = "Pacific" });
         }
     }
 }

@@ -8,22 +8,34 @@ namespace ValoPlayBook.Data.Data
     {
         private static void SeedDefaults(AppDbContext context)
         {
-            var fnatic = context.Teams.First(t => t.Name == "Fnatic");
-            var sentinels = context.Teams.First(t => t.Name == "Sentinels");
-            var ascent = context.Maps.First(m => m.Name == "Ascent");
+            // Проверяем, существует ли уже этот конкретный дефолт (по уникальному сочетанию заголовка)
+            if (context.Defaults.Any(d => d.Title == "Fnatic vs Sentinels Ascent Full Round"))
+                return;
 
-            var jett = context.Agents.First(a => a.Name == "Jett");
-            var sova = context.Agents.First(a => a.Name == "Sova");
-            var omen = context.Agents.First(a => a.Name == "Omen");
-            var killjoy = context.Agents.First(a => a.Name == "Killjoy");
-            var raze = context.Agents.First(a => a.Name == "Raze");
-            var brimstone = context.Agents.First(a => a.Name == "Brimstone");
-            var cypher = context.Agents.First(a => a.Name == "Cypher");
-            var fade = context.Agents.First(a => a.Name == "Fade");
-            var reyna = context.Agents.First(a => a.Name == "Reyna");
-            var sage = context.Agents.First(a => a.Name == "Sage");
+            // Получаем необходимые связанные сущности
+            var fnatic = context.Teams.FirstOrDefault(t => t.Name == "Fnatic");
+            var sentinels = context.Teams.FirstOrDefault(t => t.Name == "Sentinels");
+            var ascent = context.Maps.FirstOrDefault(m => m.Name == "Ascent");
 
-            // --- Единственный дефолт: Fnatic vs Sentinels (полный раунд, 10 агентов, 4 шага) ---
+            if (fnatic == null || sentinels == null || ascent == null)
+            {
+                // Если чего-то нет, прерываем создание дефолта (этого не должно произойти при корректных сидах)
+                return;
+            }
+
+            // Агенты
+            var jett = context.Agents.FirstOrDefault(a => a.Name == "Jett");
+            var sova = context.Agents.FirstOrDefault(a => a.Name == "Sova");
+            var omen = context.Agents.FirstOrDefault(a => a.Name == "Omen");
+            var killjoy = context.Agents.FirstOrDefault(a => a.Name == "Killjoy");
+            var raze = context.Agents.FirstOrDefault(a => a.Name == "Raze");
+            var brimstone = context.Agents.FirstOrDefault(a => a.Name == "Brimstone");
+            var cypher = context.Agents.FirstOrDefault(a => a.Name == "Cypher");
+            var fade = context.Agents.FirstOrDefault(a => a.Name == "Fade");
+            var reyna = context.Agents.FirstOrDefault(a => a.Name == "Reyna");
+            var sage = context.Agents.FirstOrDefault(a => a.Name == "Sage");
+
+            // Создаём дефолт
             var defaultFull = new Default
             {
                 Title = "Fnatic vs Sentinels Ascent Full Round",
@@ -36,9 +48,10 @@ namespace ValoPlayBook.Data.Data
                 YoutubeUrl = "https://youtu.be/example?t=789"
             };
             context.Defaults.Add(defaultFull);
+            // Сохраняем, чтобы получить Id
             context.SaveChanges();
 
-            // 4 шага
+            // Шаги
             var step1 = new DefaultStep { DefaultId = defaultFull.Id, StepNumber = 1, Comment = "Расстановка. Атака готовится к выходу, защита занимает позиции." };
             var step2 = new DefaultStep { DefaultId = defaultFull.Id, StepNumber = 2, Comment = "Атака: Omen курит CT и Heaven, Sova разведка. Защита: Brimstone смок в A Main, Cypher Trapwire." };
             var step3 = new DefaultStep { DefaultId = defaultFull.Id, StepNumber = 3, Comment = "Атака: Raze Boom Bot, Killjoy Nanoswarm. Защита: Fade Haunt, Reyna Leer." };
@@ -46,7 +59,7 @@ namespace ValoPlayBook.Data.Data
             context.DefaultSteps.AddRange(step1, step2, step3, step4);
             context.SaveChanges();
 
-            // Позиции атаки (IsAttacker = true)
+            // Позиции атаки
             var attackPositions = new[]
             {
                 // Шаг 1
@@ -75,7 +88,7 @@ namespace ValoPlayBook.Data.Data
                 new StepPosition { StepId = step4.Id, AgentId = raze.Id, X = 300, Y = 390, IsAttacker = true },
             };
 
-            // Позиции защиты (IsAttacker = false)
+            // Позиции защиты
             var defensePositions = new[]
             {
                 // Шаг 1
@@ -108,7 +121,7 @@ namespace ValoPlayBook.Data.Data
             context.StepPositions.AddRange(defensePositions);
             context.SaveChanges();
 
-            // Способности для шагов 2 и 3
+            // Способности
             var skySmokeBrim = context.Abilities.First(a => a.Name == "Sky Smoke" && a.AgentId == brimstone.Id);
             var darkCoverOmen = context.Abilities.First(a => a.Name == "Dark Cover" && a.AgentId == omen.Id);
             var reconBoltSova = context.Abilities.First(a => a.Name == "Recon Bolt" && a.AgentId == sova.Id);
@@ -121,25 +134,21 @@ namespace ValoPlayBook.Data.Data
 
             var step2Abilities = new StepAbility[]
             {
-                // Атака
-                new StepAbility { ActivationStepId = step2.Id, AbilityId = darkCoverOmen.Id, AgentId = omen.Id, X = 550, Y = 150, Radius = 45, DurationSteps = 2 },
-                new StepAbility { ActivationStepId = step2.Id, AbilityId = reconBoltSova.Id, AgentId = sova.Id, X = 400, Y = 200, Rotation = 45, Radius = 30, DurationSteps = 1 },
-                // Защита
-                new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 350, Y = 250, Radius = 45, DurationSteps = 2 },
-                new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 450, Y = 200, Radius = 45, DurationSteps = 2 },
-                new StepAbility { ActivationStepId = step2.Id, AbilityId = trapwireCypher.Id, AgentId = cypher.Id, X = 500, Y = 300, Rotation = 0, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step2.Id, AbilityId = darkCoverOmen.Id, AgentId = omen.Id, X = 550, Y = 150, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
+                new StepAbility { ActivationStepId = step2.Id, AbilityId = reconBoltSova.Id, AgentId = sova.Id, X = 400, Y = 200, Rotation = 45, ZoneType = AbilityZoneType.Circle, Radius = 30, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 350, Y = 250, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
+                new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 450, Y = 200, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
+                new StepAbility { ActivationStepId = step2.Id, AbilityId = trapwireCypher.Id, AgentId = cypher.Id, X = 500, Y = 300, Rotation = 0, ZoneType = AbilityZoneType.Line, Length = 80, DurationSteps = 1 },
             };
             context.StepAbilities.AddRange(step2Abilities);
 
             var step3Abilities = new StepAbility[]
             {
-                // Атака
-                new StepAbility { ActivationStepId = step3.Id, AbilityId = boomBotRaze.Id, AgentId = raze.Id, X = 250, Y = 400, Rotation = 90, DurationSteps = 1 },
-                new StepAbility { ActivationStepId = step3.Id, AbilityId = nanoswarmKilljoy.Id, AgentId = killjoy.Id, X = 300, Y = 350, Radius = 25, DurationSteps = 1 },
-                // Защита
-                new StepAbility { ActivationStepId = step3.Id, AbilityId = hauntFade.Id, AgentId = fade.Id, X = 400, Y = 150, Radius = 35, DurationSteps = 1 },
-                new StepAbility { ActivationStepId = step3.Id, AbilityId = leerReyna.Id, AgentId = reyna.Id, X = 300, Y = 350, Rotation = 180, DurationSteps = 1 },
-                new StepAbility { ActivationStepId = step3.Id, AbilityId = slowOrbSage.Id, AgentId = sage.Id, X = 600, Y = 400, Radius = 30, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step3.Id, AbilityId = boomBotRaze.Id, AgentId = raze.Id, X = 250, Y = 400, Rotation = 90, ZoneType = AbilityZoneType.Line, Length = 100, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step3.Id, AbilityId = nanoswarmKilljoy.Id, AgentId = killjoy.Id, X = 300, Y = 350, ZoneType = AbilityZoneType.Circle, Radius = 25, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step3.Id, AbilityId = hauntFade.Id, AgentId = fade.Id, X = 400, Y = 150, ZoneType = AbilityZoneType.Circle, Radius = 35, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step3.Id, AbilityId = leerReyna.Id, AgentId = reyna.Id, X = 300, Y = 350, Rotation = 180, ZoneType = AbilityZoneType.Cone, Angle = 60, Length = 100, DurationSteps = 1 },
+                new StepAbility { ActivationStepId = step3.Id, AbilityId = slowOrbSage.Id, AgentId = sage.Id, X = 600, Y = 400, ZoneType = AbilityZoneType.Circle, Radius = 30, DurationSteps = 1 },
             };
             context.StepAbilities.AddRange(step3Abilities);
             context.SaveChanges();

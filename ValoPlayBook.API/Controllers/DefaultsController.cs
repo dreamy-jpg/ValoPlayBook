@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ValoPlayBook.API.Models;
 using ValoPlayBook.API.Models.DTOs;
 using ValoPlayBook.Core.Enums;
 using ValoPlayBook.Data.Data;
@@ -19,21 +20,22 @@ namespace ValoPlayBook.API.Controllers
 
         // GET: api/defaults?mapId=1&teamId=1&side=Attack&roundNumber=1
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DefaultDto>>> GetDefaults(
+        public async Task<ActionResult<PagedResult<DefaultListItemDto>>> GetDefaults(
             [FromQuery] int? mapId,
             [FromQuery] int? teamId,
             [FromQuery] Side? side,
-            [FromQuery] int? roundNumber)
+            [FromQuery] int? roundNumber,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+            if (pageSize > 50) pageSize = 50; // ограничение
+
             var query = _context.Defaults
                 .Include(d => d.Team)
                 .Include(d => d.Map)
-                .Include(d => d.Steps)
-                    .ThenInclude(s => s.Positions)
-                        .ThenInclude(p => p.Agent)
-                .Include(d => d.Steps)
-                    .ThenInclude(s => s.StepAbilities)
-                        .ThenInclude(sa => sa.Ability)
+                .Include(d => d.Steps) // нужно только для подсчёта количества шагов
                 .AsQueryable();
 
             if (mapId.HasValue)
@@ -48,9 +50,34 @@ namespace ValoPlayBook.API.Controllers
             if (roundNumber.HasValue)
                 query = query.Where(d => d.RoundNumber == roundNumber.Value);
 
-            var defaults = await query.ToListAsync();
+            var totalCount = await query.CountAsync();
 
-            var result = defaults.Select(d => MapToDto(d));
+            var items = await query
+                .OrderByDescending(d => d.CreatedAt) // или по Id
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(d => new DefaultListItemDto
+                {
+                    Id = d.Id,
+                    Title = d.Title,
+                    Description = d.Description,
+                    Team = new TeamDto { Id = d.Team.Id, Name = d.Team.Name, LogoUrl = d.Team.LogoUrl },
+                    Map = new MapDto { Id = d.Map.Id, Name = d.Map.Name, ImageUrl = d.Map.ImageUrl },
+                    Side = d.Side.ToString(),
+                    RoundNumber = d.RoundNumber,
+                    OpponentTeamName = d.OpponentTeamName,
+                    YoutubeUrl = d.YoutubeUrl,
+                    StepCount = d.Steps.Count
+                })
+                .ToListAsync();
+
+            var result = new PagedResult<DefaultListItemDto>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
 
             return Ok(result);
         }

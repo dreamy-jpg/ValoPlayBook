@@ -1,4 +1,5 @@
-﻿using ValoPlayBook.Core.Models;
+﻿using System.Linq;
+using ValoPlayBook.Core.Models;
 
 namespace ValoPlayBook.Data.Data
 {
@@ -6,21 +7,28 @@ namespace ValoPlayBook.Data.Data
     {
         private static void SeedAgents(AppDbContext context)
         {
-            var agents = new Agent[]
+            // Массив агентов с именами и ролями
+            var agentData = new[]
             {
-                new Agent { Name = "Jett", Role = "Duelist" },
-                new Agent { Name = "Sova", Role = "Initiator" },
-                new Agent { Name = "Omen", Role = "Controller" },
-                new Agent { Name = "Killjoy", Role = "Sentinel" },
-                new Agent { Name = "Raze", Role = "Duelist" },
-                new Agent { Name = "Brimstone", Role = "Controller" },
-                new Agent { Name = "Cypher", Role = "Sentinel" },
-                new Agent { Name = "Fade", Role = "Initiator" },
-                new Agent { Name = "Reyna", Role = "Duelist" },
-                new Agent { Name = "Sage", Role = "Sentinel" }
+                ("Jett", "Duelist"),
+                ("Sova", "Initiator"),
+                ("Omen", "Controller"),
+                ("Killjoy", "Sentinel"),
+                ("Raze", "Duelist"),
+                ("Brimstone", "Controller"),
+                ("Cypher", "Sentinel"),
+                ("Fade", "Initiator"),
+                ("Reyna", "Duelist"),
+                ("Sage", "Sentinel")
             };
-            context.Agents.AddRange(agents);
-            context.SaveChanges();
+
+            foreach (var (name, role) in agentData)
+            {
+                if (!context.Agents.Any(a => a.Name == name))
+                {
+                    context.Agents.Add(new Agent { Name = name, Role = role });
+                }
+            }
         }
     }
 }
