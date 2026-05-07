@@ -19,7 +19,26 @@ namespace ValoPlayBook.Data.Data
                 ("Cypher", "Sentinel"),
                 ("Fade", "Initiator"),
                 ("Reyna", "Duelist"),
-                ("Sage", "Sentinel")
+                ("Sage", "Sentinel"),
+                ("Astra", "Controller"),
+                ("Breach", "Initiator"),
+                ("Chamber", "Sentinel"),
+                ("Clove", "Controller"),
+                ("Deadlock", "Sentinel"),
+                ("Gekko", "Initiator"),
+                ("Harbor", "Controller"),
+                ("Iso", "Duelist"),
+                ("Kayo", "Initiator"),
+                ("Neon", "Duelist"),
+                ("Phoenix", "Duelist"),
+                ("Skye", "Initiator"),
+                ("Tejo", "Controller"),
+                ("Viper", "Controller"),
+                ("Vyse", "Sentinel"),
+                ("Waylay", "Duelist"),
+                ("Yoru", "Duelist"),
+                ("Miks", "Controller"),
+                ("Veto", "Sentinel")
             };
 
             foreach (var (name, role) in agentData)

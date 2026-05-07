@@ -12,11 +12,13 @@ namespace ValoPlayBook.Data.Data
             SeedTeams(context);
             SeedMaps(context);
             SeedAgents(context);
+            context.SaveChanges();  // <-- сохраняем агентов, чтобы получить их Id
+
             SeedAbilities(context);
-            SeedUsers(context);        // <-- новый вызов
+            SeedUsers(context);
             SeedDefaults(context);
 
-            context.SaveChanges();
+            context.SaveChanges();  // финальное сохранение
         }
 
         private static void SeedUsers(AppDbContext context)

@@ -3,12 +3,13 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
 import LandingPage from './pages/LandingPage';
-import CatalogPage from './pages/CatalogPage';
-import DefaultDetailPage from './pages/DefaultDetailPage';
+import TacticListPage from './pages/TacticListPage';
+import TacticDetailPage from './pages/TacticDetailPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
+import NewTacticPage from './pages/NewTacticPage';
 
 function App() {
   return (
@@ -41,15 +42,18 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/defaults" element={<CatalogPage />} />
+          <Route path="/defaults" element={<TacticListPage />} />
           {/* Страница разбора доступна всем */}
-          <Route path="/defaults/:id" element={<DefaultDetailPage />} />
+          <Route path="/defaults/:id" element={<TacticDetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Защищённые маршруты (требуется авторизация) */}
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+          <Route element={<ProtectedRoute requireAdmin />}>
+            <Route path="/defaults/create" element={<NewTacticPage />} />
           </Route>
         </Routes>
       </AuthProvider>

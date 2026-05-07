@@ -1,4 +1,4 @@
-import type { StepAbilityDto } from '../types';
+import type { StepAbilityDto, AbilityDto } from '../types';
 
 interface AgentInfo {
   id: number;
@@ -9,6 +9,7 @@ interface AbilityOverlayProps {
   attackAgents: AgentInfo[];
   defenseAgents: AgentInfo[];
   stepAbilities: StepAbilityDto[];
+  agentAbilities: Record<number, AbilityDto[]>;
 }
 
 function getAgentIconUrl(agentName: string): string {
@@ -19,71 +20,36 @@ function getAbilityIconUrl(agentName: string, abilityName: string): string {
   return `/agents/${agentName.toLowerCase()}/abilities/${abilityName.replace(/\s+/g, '_')}.png`;
 }
 
-const hardcodedAgentAbilities: Record<string, { name: string; maxCharges: number }[]> = {
-  Brimstone: [
-    { name: 'Incendiary', maxCharges: 1 },
-    { name: 'Stim Beacon', maxCharges: 2 },
-    { name: 'Sky Smoke', maxCharges: 3 },
-    { name: 'Orbital Strike', maxCharges: 1 },
-  ],
-  Jett: [
-    { name: 'Cloudburst', maxCharges: 3 },
-    { name: 'Updraft', maxCharges: 2 },
-    { name: 'Tailwind', maxCharges: 1 },
-    { name: 'Blade Storm', maxCharges: 1 },
-  ],
-  Omen: [
-    { name: 'Shrouded Step', maxCharges: 2 },
-    { name: 'Paranoia', maxCharges: 1 },
-    { name: 'Dark Cover', maxCharges: 2 },
-    { name: 'From the Shadows', maxCharges: 1 },
-  ],
-  Sova: [
-    { name: 'Owl Drone', maxCharges: 1 },
-    { name: 'Shock Bolt', maxCharges: 2 },
-    { name: 'Recon Bolt', maxCharges: 1 },
-    { name: "Hunter's Fury", maxCharges: 1 },
-  ],
-  Killjoy: [
-    { name: 'Nanoswarm', maxCharges: 2 },
-    { name: 'Alarmbot', maxCharges: 1 },
-    { name: 'Turret', maxCharges: 1 },
-    { name: 'Lockdown', maxCharges: 1 },
-  ],
-  Raze: [
-    { name: 'Boom Bot', maxCharges: 1 },
-    { name: 'Blast Pack', maxCharges: 2 },
-    { name: 'Paint Shells', maxCharges: 1 },
-    { name: 'Showstopper', maxCharges: 1 },
-  ],
-  Cypher: [
-    { name: 'Trapwire', maxCharges: 2 },
-    { name: 'Cyber Cage', maxCharges: 2 },
-    { name: 'Spycam', maxCharges: 1 },
-    { name: 'Neural Theft', maxCharges: 1 },
-  ],
-  Fade: [
-    { name: 'Prowler', maxCharges: 2 },
-    { name: 'Seize', maxCharges: 1 },
-    { name: 'Haunt', maxCharges: 1 },
-    { name: 'Nightfall', maxCharges: 1 },
-  ],
-  Reyna: [
-    { name: 'Leer', maxCharges: 2 },
-    { name: 'Devour', maxCharges: 2 },
-    { name: 'Dismiss', maxCharges: 2 },
-    { name: 'Empress', maxCharges: 1 },
-  ],
-  Sage: [
-    { name: 'Barrier Orb', maxCharges: 1 },
-    { name: 'Slow Orb', maxCharges: 2 },
-    { name: 'Healing Orb', maxCharges: 1 },
-    { name: 'Resurrection', maxCharges: 1 },
-  ],
-};
+function ChargesRow({ used, max }: { used: number; max: number }) {
+  // Группируем точки по 4 в строке
+  const rows: JSX.Element[] = [];
+  for (let start = 0; start < max; start += 4) {
+    const chunk = Array.from({ length: Math.min(4, max - start) }).map((_, i) => {
+      const index = start + i;
+      return (
+        <div
+          key={index}
+          className={`w-2 h-2 rounded-full mx-px ${
+            index < used ? 'bg-gray-400' : 'bg-white'
+          }`}
+        />
+      );
+    });
+    rows.push(
+      <div key={`row-${start}`} className="flex justify-center">
+        {chunk}
+      </div>
+    );
+  }
+  return <div className="flex flex-col items-center mt-1">{rows}</div>;
+}
 
-function AgentRow({ agent, stepAbilities, bgColor }: { agent: AgentInfo; stepAbilities: StepAbilityDto[]; bgColor: string }) {
-  const abilitiesList = hardcodedAgentAbilities[agent.name] || [];
+function AgentRow({ agent, stepAbilities, bgColor, abilities }: {
+  agent: AgentInfo;
+  stepAbilities: StepAbilityDto[];
+  bgColor: string;
+  abilities: AbilityDto[];
+}) {
   const getUsedCharges = (abilityName: string) =>
     stepAbilities.filter(sa => sa.agentName === agent.name && sa.abilityName === abilityName).length;
 
@@ -100,7 +66,7 @@ function AgentRow({ agent, stepAbilities, bgColor }: { agent: AgentInfo; stepAbi
         />
       </div>
       <div className="flex gap-2">
-        {abilitiesList.map((ab, idx) => {
+        {abilities.map((ab, idx) => {
           const used = getUsedCharges(ab.name);
           const max = ab.maxCharges;
           return (
@@ -116,16 +82,7 @@ function AgentRow({ agent, stepAbilities, bgColor }: { agent: AgentInfo; stepAbi
                   {used}
                 </span>
               )}
-              <div className="flex justify-center mt-1">
-                {Array.from({ length: max }).map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-2 h-2 rounded-full mx-px ${
-                      i < used ? 'bg-gray-400' : 'bg-white'
-                    }`}
-                  />
-                ))}
-              </div>
+              <ChargesRow used={used} max={max} />
             </div>
           );
         })}
@@ -134,13 +91,13 @@ function AgentRow({ agent, stepAbilities, bgColor }: { agent: AgentInfo; stepAbi
   );
 }
 
-export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilities }: AbilityOverlayProps) {
+export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilities, agentAbilities }: AbilityOverlayProps) {
   return (
     <>
       {attackAgents.length > 0 && (
         <div
           className="absolute bottom-0 left-0 pointer-events-none p-4"
-          style={{ transform: 'scale(var(--map-scale, 1))', transformOrigin: 'bottom left' }}
+          style={{ transform: 'scale(calc(var(--map-scale, 1) * 1.25))', transformOrigin: 'bottom left' }}
         >
           <div className="bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
             <div className="flex flex-col gap-3">
@@ -150,6 +107,7 @@ export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilit
                   agent={agent}
                   stepAbilities={stepAbilities}
                   bgColor="#cc5555"
+                  abilities={agentAbilities[agent.id] || []}
                 />
               ))}
             </div>
@@ -160,7 +118,7 @@ export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilit
       {defenseAgents.length > 0 && (
         <div
           className="absolute bottom-0 right-0 pointer-events-none p-4"
-          style={{ transform: 'scale(var(--map-scale, 1))', transformOrigin: 'bottom right' }}
+          style={{ transform: 'scale(calc(var(--map-scale, 1) * 1.25))', transformOrigin: 'bottom right' }}
         >
           <div className="bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
             <div className="flex flex-col gap-3">
@@ -170,6 +128,7 @@ export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilit
                   agent={agent}
                   stepAbilities={stepAbilities}
                   bgColor="#5f9f9f"
+                  abilities={agentAbilities[agent.id] || []}
                 />
               ))}
             </div>

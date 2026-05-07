@@ -6,7 +6,9 @@ interface DraggableAgentIconProps {
   pos: PositionDto;
   editMode: boolean;
   onPositionChange?: (id: number, x: number, y: number) => void;
-  clipPathIdPrefix?: string; // чтобы избежать конфликтов id в разных SVG
+  clipPathIdPrefix?: string;
+  trashZone?: { x: number; y: number; size: number };
+  onDropOnTrash?: (positionId: number) => void;
 }
 
 export default function DraggableAgentIcon({
@@ -14,6 +16,8 @@ export default function DraggableAgentIcon({
   editMode,
   onPositionChange,
   clipPathIdPrefix = 'agent',
+  trashZone,
+  onDropOnTrash,
 }: DraggableAgentIconProps) {
   const agentSize = 32;
   const bgColor = pos.isAttacker ? '#cc5555' : '#5f9f9f';
@@ -21,6 +25,19 @@ export default function DraggableAgentIcon({
   const { position, handleMouseDown } = useDraggable(pos.x, pos.y, {
     disabled: !editMode,
     onDragEnd: (x, y) => {
+      // Проверяем, попадает ли конечная точка в корзину
+      if (trashZone && onDropOnTrash) {
+        const inTrash =
+          x > trashZone.x &&
+          x < trashZone.x + trashZone.size &&
+          y > trashZone.y &&
+          y < trashZone.y + trashZone.size;
+        if (inTrash) {
+          onDropOnTrash(pos.id);
+          return; // не сохраняем позицию
+        }
+      }
+      // Обычное сохранение позиции
       onPositionChange?.(pos.id, x, y);
     },
   });

@@ -11,6 +11,7 @@
         public int? RoundNumber { get; set; }
         public string? OpponentTeamName { get; set; }
         public string? YoutubeUrl { get; set; }
+        public string? ImageUrl { get; set; }     // <-- добавлено
         public List<StepDto> Steps { get; set; } = new();
     }
 }

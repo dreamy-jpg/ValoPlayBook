@@ -1,3 +1,19 @@
+export interface AbilityDto {
+  id: number;
+  name: string;
+  type: string;
+  maxCharges: number;
+  iconUrl?: string | null;
+}
+
+export interface AgentDto {
+  id: number;
+  name: string;
+  role: string;
+  iconUrl?: string | null;
+  abilities: AbilityDto[];
+}
+
 export interface TeamDto {
   id: number;
   name: string;
@@ -56,6 +72,7 @@ export interface DefaultDto {
   roundNumber?: number | null;
   opponentTeamName?: string | null;
   youtubeUrl?: string | null;
+  imageUrl?: string | null; // новое
   steps: StepDto[];
 }
 
@@ -65,6 +82,7 @@ export interface CommentDto {
   authorEmail?: string | null;
   content: string;
   createdAt: string;
+  userId?: number | null;   // <-- добавлено
 }
 
 export interface CreateCommentDto {
@@ -96,7 +114,10 @@ export interface DefaultListItemDto {
   opponentTeamName?: string;
   youtubeUrl?: string;
   stepCount: number;
+  createdByUserId?: number | null;
+  imageUrl?: string | null; // новое
 }
+
 
 export interface PagedResult<T> {
   items: T[];

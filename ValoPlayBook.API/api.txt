@@ -1,0 +1,360 @@
+Ñòðóêòóðà ïàïîê òîìà home
+Ñåðèéíûé íîìåð òîìà: BAC0-FF1E
+D:.
+¦   api.txt
+¦   appsettings.Development.json
+¦   appsettings.json
+¦   Program.cs
+¦   ValoPlayBook.API.csproj
+¦   ValoPlayBook.API.csproj.user
+¦   ValoPlayBook.API.http
+¦   
++---bin
+¦   L---Debug
+¦       L---net10.0
+¦           ¦   appsettings.Development.json
+¦           ¦   appsettings.json
+¦           ¦   BCrypt.Net-Next.dll
+¦           ¦   Humanizer.dll
+¦           ¦   Microsoft.AspNetCore.Authentication.JwtBearer.dll
+¦           ¦   Microsoft.AspNetCore.OpenApi.dll
+¦           ¦   Microsoft.Build.Framework.dll
+¦           ¦   Microsoft.CodeAnalysis.CSharp.dll
+¦           ¦   Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+¦           ¦   Microsoft.CodeAnalysis.dll
+¦           ¦   Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll
+¦           ¦   Microsoft.CodeAnalysis.Workspaces.dll
+¦           ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+¦           ¦   Microsoft.EntityFrameworkCore.Abstractions.dll
+¦           ¦   Microsoft.EntityFrameworkCore.Design.dll
+¦           ¦   Microsoft.EntityFrameworkCore.dll
+¦           ¦   Microsoft.EntityFrameworkCore.Relational.dll
+¦           ¦   Microsoft.Extensions.DependencyModel.dll
+¦           ¦   Microsoft.IdentityModel.Abstractions.dll
+¦           ¦   Microsoft.IdentityModel.JsonWebTokens.dll
+¦           ¦   Microsoft.IdentityModel.Logging.dll
+¦           ¦   Microsoft.IdentityModel.Protocols.dll
+¦           ¦   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+¦           ¦   Microsoft.IdentityModel.Tokens.dll
+¦           ¦   Microsoft.OpenApi.dll
+¦           ¦   Microsoft.VisualStudio.SolutionPersistence.dll
+¦           ¦   Mono.TextTemplating.dll
+¦           ¦   Newtonsoft.Json.dll
+¦           ¦   Npgsql.dll
+¦           ¦   Npgsql.EntityFrameworkCore.PostgreSQL.dll
+¦           ¦   Swashbuckle.AspNetCore.Swagger.dll
+¦           ¦   Swashbuckle.AspNetCore.SwaggerGen.dll
+¦           ¦   Swashbuckle.AspNetCore.SwaggerUI.dll
+¦           ¦   System.CodeDom.dll
+¦           ¦   System.Composition.AttributedModel.dll
+¦           ¦   System.Composition.Convention.dll
+¦           ¦   System.Composition.Hosting.dll
+¦           ¦   System.Composition.Runtime.dll
+¦           ¦   System.Composition.TypedParts.dll
+¦           ¦   System.IdentityModel.Tokens.Jwt.dll
+¦           ¦   ValoPlayBook.API.deps.json
+¦           ¦   ValoPlayBook.API.dll
+¦           ¦   ValoPlayBook.API.exe
+¦           ¦   ValoPlayBook.API.pdb
+¦           ¦   ValoPlayBook.API.runtimeconfig.json
+¦           ¦   ValoPlayBook.API.staticwebassets.endpoints.json
+¦           ¦   ValoPlayBook.API.staticwebassets.runtime.json
+¦           ¦   ValoPlayBook.Core.dll
+¦           ¦   ValoPlayBook.Core.pdb
+¦           ¦   ValoPlayBook.Data.dll
+¦           ¦   ValoPlayBook.Data.pdb
+¦           ¦   
+¦           +---BuildHost-net472
+¦           ¦   ¦   Microsoft.Build.Locator.dll
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config
+¦           ¦   ¦   Microsoft.IO.Redist.dll
+¦           ¦   ¦   Newtonsoft.Json.dll
+¦           ¦   ¦   System.Buffers.dll
+¦           ¦   ¦   System.Collections.Immutable.dll
+¦           ¦   ¦   System.CommandLine.dll
+¦           ¦   ¦   System.Memory.dll
+¦           ¦   ¦   System.Numerics.Vectors.dll
+¦           ¦   ¦   System.Runtime.CompilerServices.Unsafe.dll
+¦           ¦   ¦   System.Threading.Tasks.Extensions.dll
+¦           ¦   ¦   
+¦           ¦   +---cs
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---de
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---es
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---fr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---it
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ja
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ko
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pl
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pt-BR
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ru
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---tr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---zh-Hans
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   L---zh-Hant
+¦           ¦           System.CommandLine.resources.dll
+¦           ¦           
+¦           +---BuildHost-netcore
+¦           ¦   ¦   Microsoft.Build.Locator.dll
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json
+¦           ¦   ¦   Newtonsoft.Json.dll
+¦           ¦   ¦   System.Collections.Immutable.dll
+¦           ¦   ¦   System.CommandLine.dll
+¦           ¦   ¦   
+¦           ¦   +---cs
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---de
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---es
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---fr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---it
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ja
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ko
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pl
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pt-BR
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ru
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---tr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---zh-Hans
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   L---zh-Hant
+¦           ¦           System.CommandLine.resources.dll
+¦           ¦           
+¦           +---cs
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---de
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---es
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---fr
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---it
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---ja
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---ko
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---pl
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---pt-BR
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---ru
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---tr
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           +---zh-Hans
+¦           ¦       Microsoft.CodeAnalysis.CSharp.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦           ¦       Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦           ¦       
+¦           L---zh-Hant
+¦                   Microsoft.CodeAnalysis.CSharp.resources.dll
+¦                   Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+¦                   Microsoft.CodeAnalysis.resources.dll
+¦                   Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+¦                   Microsoft.CodeAnalysis.Workspaces.resources.dll
+¦                   
++---Controllers
+¦       AgentsController.cs
+¦       AuthController.cs
+¦       CommentsController.cs
+¦       DefaultsController.cs
+¦       MapsController.cs
+¦       StepAbilitiesController.cs
+¦       StepPositionsController.cs
+¦       TeamsController.cs
+¦       
++---Helpers
+¦       MappingHelper.cs
+¦       
++---Middlewares
+¦       ExceptionHandlingMiddleware.cs
+¦       
++---Models
+¦   ¦   PagedResult.cs
+¦   ¦   
+¦   L---DTOs
+¦           AuthDtos.cs
+¦           ChangePasswordDto.cs
+¦           CommentDto.cs
+¦           CreateDefaultDto.cs
+¦           CreatePositionDto.cs
+¦           CreateStepAbilityDto.cs
+¦           CreateStepDto.cs
+¦           DefaultDto.cs
+¦           DefaultListItemDto.cs
+¦           MapDto.cs
+¦           PositionDto.cs
+¦           ReplacePositionDto.cs
+¦           StepAbilityDto.cs
+¦           StepDto.cs
+¦           TeamDto.cs
+¦           UpdatePositionDto.cs
+¦           UpdateStepAbilityDto.cs
+¦           UpdateStepDto.cs
+¦           
++---obj
+¦   ¦   project.assets.json
+¦   ¦   project.nuget.cache
+¦   ¦   ValoPlayBook.API.csproj.nuget.dgspec.json
+¦   ¦   ValoPlayBook.API.csproj.nuget.g.props
+¦   ¦   ValoPlayBook.API.csproj.nuget.g.targets
+¦   ¦   
+¦   L---Debug
+¦       L---net10.0
+¦           ¦   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+¦           ¦   ApiEndpoints.json
+¦           ¦   apphost.exe
+¦           ¦   rjimswa.dswa.cache.json
+¦           ¦   rjsmcshtml.dswa.cache.json
+¦           ¦   rjsmrazor.dswa.cache.json
+¦           ¦   rpswa.dswa.cache.json
+¦           ¦   staticwebassets.build.endpoints.json
+¦           ¦   staticwebassets.build.json
+¦           ¦   staticwebassets.build.json.cache
+¦           ¦   staticwebassets.development.json
+¦           ¦   staticwebassets.references.upToDateCheck.txt
+¦           ¦   staticwebassets.removed.txt
+¦           ¦   staticwebassets.upToDateCheck.txt
+¦           ¦   swae.build.ex.cache
+¦           ¦   ValoPlay.D3C773E2.Up2Date
+¦           ¦   ValoPlayBook.API.AssemblyInfo.cs
+¦           ¦   ValoPlayBook.API.AssemblyInfoInputs.cache
+¦           ¦   ValoPlayBook.API.assets.cache
+¦           ¦   ValoPlayBook.API.csproj.AssemblyReference.cache
+¦           ¦   ValoPlayBook.API.csproj.BuildWithSkipAnalyzers
+¦           ¦   ValoPlayBook.API.csproj.CoreCompileInputs.cache
+¦           ¦   ValoPlayBook.API.csproj.FileListAbsolute.txt
+¦           ¦   ValoPlayBook.API.dll
+¦           ¦   ValoPlayBook.API.GeneratedMSBuildEditorConfig.editorconfig
+¦           ¦   ValoPlayBook.API.genruntimeconfig.cache
+¦           ¦   ValoPlayBook.API.GlobalUsings.g.cs
+¦           ¦   ValoPlayBook.API.MvcApplicationPartsAssemblyInfo.cache
+¦           ¦   ValoPlayBook.API.MvcApplicationPartsAssemblyInfo.cs
+¦           ¦   ValoPlayBook.API.pdb
+¦           ¦   ValoPlayBook.API.sourcelink.json
+¦           ¦   
+¦           +---EndpointInfo
+¦           ¦       ValoPlayBook.API.json
+¦           ¦       ValoPlayBook.API.OpenApiFiles.cache
+¦           ¦       
+¦           +---ref
+¦           ¦       ValoPlayBook.API.dll
+¦           ¦       
+¦           +---refint
+¦           ¦       ValoPlayBook.API.dll
+¦           ¦       
+¦           L---staticwebassets
++---Properties
+¦       launchSettings.json
+¦       
++---Services
+¦       AuthService.cs
+¦       
+L---wwwroot
+    L---avatars
+            1_be749f8c-3afe-453f-b48b-15877c9f5eb8.jpg
+            1_d3a683b2-d412-4ba4-b320-3a3e77061ebe.jpg
+            

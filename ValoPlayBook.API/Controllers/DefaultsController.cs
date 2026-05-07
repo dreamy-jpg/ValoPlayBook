@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ValoPlayBook.API.Helpers;
 using ValoPlayBook.API.Models;
 using ValoPlayBook.API.Models.DTOs;
 using ValoPlayBook.Core.Enums;
+using ValoPlayBook.Core.Models;
 using ValoPlayBook.Data.Data;
+using System.Linq;
 
 namespace ValoPlayBook.API.Controllers
 {
@@ -18,42 +22,37 @@ namespace ValoPlayBook.API.Controllers
             _context = context;
         }
 
-        // GET: api/defaults?mapId=1&teamId=1&side=Attack&roundNumber=1
         [HttpGet]
         public async Task<ActionResult<PagedResult<DefaultListItemDto>>> GetDefaults(
             [FromQuery] int? mapId,
             [FromQuery] int? teamId,
             [FromQuery] Side? side,
-            [FromQuery] int? roundNumber,
+            [FromQuery] int? createdByUserId,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
             if (pageNumber < 1) pageNumber = 1;
             if (pageSize < 1) pageSize = 10;
-            if (pageSize > 50) pageSize = 50; // ограничение
+            if (pageSize > 50) pageSize = 50;
 
             var query = _context.Defaults
                 .Include(d => d.Team)
                 .Include(d => d.Map)
-                .Include(d => d.Steps) // нужно только для подсчёта количества шагов
                 .AsQueryable();
 
             if (mapId.HasValue)
                 query = query.Where(d => d.MapId == mapId.Value);
-
             if (teamId.HasValue)
                 query = query.Where(d => d.TeamId == teamId.Value);
-
             if (side.HasValue)
                 query = query.Where(d => d.Side == side.Value);
-
-            if (roundNumber.HasValue)
-                query = query.Where(d => d.RoundNumber == roundNumber.Value);
+            if (createdByUserId.HasValue)
+                query = query.Where(d => d.CreatedByUserId == createdByUserId.Value);
 
             var totalCount = await query.CountAsync();
 
             var items = await query
-                .OrderByDescending(d => d.CreatedAt) // или по Id
+                .OrderByDescending(d => d.CreatedAt)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .Select(d => new DefaultListItemDto
@@ -67,7 +66,9 @@ namespace ValoPlayBook.API.Controllers
                     RoundNumber = d.RoundNumber,
                     OpponentTeamName = d.OpponentTeamName,
                     YoutubeUrl = d.YoutubeUrl,
-                    StepCount = d.Steps.Count
+                    StepCount = d.Steps.Count,
+                    CreatedByUserId = d.CreatedByUserId,
+                    ImageUrl = d.ImageUrl
                 })
                 .ToListAsync();
 
@@ -82,7 +83,6 @@ namespace ValoPlayBook.API.Controllers
             return Ok(result);
         }
 
-        // GET: api/defaults/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DefaultDto>> GetDefault(int id)
         {
@@ -101,68 +101,180 @@ namespace ValoPlayBook.API.Controllers
             if (defaultEntity == null)
                 return NotFound();
 
-            return Ok(MapToDto(defaultEntity));
+            return Ok(MappingHelper.MapToDto(defaultEntity));
         }
 
-        // Вспомогательный метод маппинга (можно вынести в отдельный сервис позже)
-        private static DefaultDto MapToDto(Core.Models.Default entity)
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<DefaultDto>> CreateDefault(CreateDefaultDto dto)
         {
-            return new DefaultDto
+            var team = await _context.Teams.FindAsync(dto.TeamId);
+            if (team == null) return BadRequest("Команда не найдена");
+            var map = await _context.Maps.FindAsync(dto.MapId);
+            if (map == null) return BadRequest("Карта не найдена");
+            if (!Enum.TryParse<Side>(dto.Side, out var side))
+                return BadRequest("Некорректная сторона (допустимо Attack, Defense)");
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            int? userId = null;
+            if (!string.IsNullOrEmpty(userIdClaim) && int.TryParse(userIdClaim, out var parsedUserId))
+                userId = parsedUserId;
+
+            var defaultEntity = new Core.Models.Default
             {
-                Id = entity.Id,
-                Title = entity.Title,
-                Description = entity.Description,
-                Team = new TeamDto
-                {
-                    Id = entity.Team.Id,
-                    Name = entity.Team.Name,
-                    LogoUrl = entity.Team.LogoUrl
-                },
-                Map = new MapDto
-                {
-                    Id = entity.Map.Id,
-                    Name = entity.Map.Name,
-                    ImageUrl = entity.Map.ImageUrl
-                },
-                Side = entity.Side.ToString(),
-                RoundNumber = entity.RoundNumber,
-                OpponentTeamName = entity.OpponentTeamName,
-                YoutubeUrl = entity.YoutubeUrl,
-                Steps = entity.Steps.OrderBy(s => s.StepNumber).Select(s => new StepDto
-                {
-                    Id = s.Id,
-                    StepNumber = s.StepNumber,
-                    Comment = s.Comment,
-                    Positions = s.Positions.Select(p => new PositionDto
-                    {
-                        Id = p.Id,
-                        AgentId = p.AgentId,
-                        AgentName = p.Agent.Name,
-                        X = p.X,
-                        Y = p.Y,
-                        Rotation = p.Rotation,
-                        IsAttacker = p.IsAttacker
-                    }).ToList(),
-                    Abilities = s.StepAbilities.Select(sa => new StepAbilityDto
-                    {
-                        Id = sa.Id,
-                        ActivationStepId = sa.ActivationStepId,
-                        AbilityId = sa.AbilityId,
-                        AbilityName = sa.Ability?.Name ?? "Unknown",
-                        AgentId = sa.AgentId,
-                        AgentName = sa.Ability?.Agent?.Name ?? "Unknown",
-                        X = sa.X,
-                        Y = sa.Y,
-                        Rotation = sa.Rotation,
-                        ZoneType = sa.ZoneType.ToString(),
-                        Radius = sa.Radius,
-                        Length = sa.Length,
-                        Width = sa.Width,
-                        Angle = sa.Angle,
-                        DurationSteps = sa.DurationSteps
-                    }).ToList()
-                }).ToList()
+                Title = dto.Title,
+                Description = dto.Description,
+                TeamId = dto.TeamId,
+                MapId = dto.MapId,
+                Side = side,
+                RoundNumber = dto.RoundNumber,
+                OpponentTeamName = dto.OpponentTeamName,
+                YoutubeUrl = dto.YoutubeUrl,
+                ImageUrl = dto.ImageUrl,
+                CreatedByUserId = userId,
+                CreatedAt = DateTime.UtcNow
             };
+
+            _context.Defaults.Add(defaultEntity);
+            await _context.SaveChangesAsync();
+
+            var created = await _context.Defaults
+                .Include(d => d.Team)
+                .Include(d => d.Map)
+                .FirstAsync(d => d.Id == defaultEntity.Id);
+
+            return CreatedAtAction(nameof(GetDefault), new { id = created.Id }, MappingHelper.MapToDto(created));
+        }
+
+        [HttpPost("{defaultId}/steps")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<StepDto>> CreateStep(int defaultId, CreateStepDto dto)
+        {
+            var defaultEntity = await _context.Defaults
+                .Include(d => d.Steps)
+                .FirstOrDefaultAsync(d => d.Id == defaultId);
+            if (defaultEntity == null)
+                return NotFound("Тактика не найдена");
+
+            if (defaultEntity.Steps.Any(s => s.StepNumber == dto.StepNumber))
+                return BadRequest("Шаг с таким номером уже существует в этой тактике");
+
+            var step = new DefaultStep
+            {
+                DefaultId = defaultId,
+                StepNumber = dto.StepNumber,
+                Comment = dto.Comment ?? string.Empty
+            };
+
+            _context.DefaultSteps.Add(step);
+            await _context.SaveChangesAsync();
+
+            var stepDto = new StepDto
+            {
+                Id = step.Id,
+                StepNumber = step.StepNumber,
+                Comment = step.Comment,
+                Positions = new List<PositionDto>(),
+                Abilities = new List<StepAbilityDto>()
+            };
+
+            return CreatedAtAction(nameof(GetDefault), new { id = defaultId }, stepDto);
+        }
+
+        [HttpDelete("{defaultId}/steps/{stepId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteStep(int defaultId, int stepId)
+        {
+            var step = await _context.DefaultSteps
+                .FirstOrDefaultAsync(s => s.Id == stepId && s.DefaultId == defaultId);
+            if (step == null)
+                return NotFound("Шаг не найден");
+
+            _context.DefaultSteps.Remove(step);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPost("{defaultId}/steps/{stepId}/positions")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<PositionDto>> CreatePosition(int defaultId, int stepId, CreatePositionDto dto)
+        {
+            var step = await _context.DefaultSteps
+                .Include(s => s.Positions)
+                .FirstOrDefaultAsync(s => s.Id == stepId && s.DefaultId == defaultId);
+            if (step == null)
+                return NotFound("Шаг не найден");
+
+            var sameSideCount = step.Positions.Count(p => p.IsAttacker == dto.IsAttacker);
+            if (sameSideCount >= 5)
+                return BadRequest($"На стороне {(dto.IsAttacker ? "атаки" : "защиты")} уже максимум агентов (5)");
+
+            if (step.Positions.Any(p => p.AgentId == dto.AgentId))
+                return BadRequest("Этот агент уже находится на данном шаге");
+
+            var agent = await _context.Agents.FindAsync(dto.AgentId);
+            if (agent == null)
+                return BadRequest("Агент не найден");
+
+            var position = new StepPosition
+            {
+                StepId = stepId,
+                AgentId = dto.AgentId,
+                X = dto.X ?? 512,
+                Y = dto.Y ?? 512,
+                IsAttacker = dto.IsAttacker,
+                Rotation = null
+            };
+
+            _context.StepPositions.Add(position);
+            await _context.SaveChangesAsync();
+
+            var positionDto = new PositionDto
+            {
+                Id = position.Id,
+                AgentId = position.AgentId,
+                AgentName = agent.Name,
+                X = position.X,
+                Y = position.Y,
+                Rotation = position.Rotation,
+                IsAttacker = position.IsAttacker
+            };
+
+            return CreatedAtAction(nameof(GetDefault), new { id = defaultId }, positionDto);
+        }
+
+        [HttpPut("{defaultId}/steps/{stepId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateStep(int defaultId, int stepId, UpdateStepDto dto)
+        {
+            var step = await _context.DefaultSteps
+                .FirstOrDefaultAsync(s => s.Id == stepId && s.DefaultId == defaultId);
+            if (step == null) return NotFound("Шаг не найден");
+
+            step.Comment = dto.Comment ?? step.Comment;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteDefault(int id)
+        {
+            var defaultEntity = await _context.Defaults.FindAsync(id);
+            if (defaultEntity == null) return NotFound();
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+                return Unauthorized();
+
+            bool isAdmin = User.IsInRole("Admin");
+            if (!isAdmin && defaultEntity.CreatedByUserId != currentUserId)
+                return Forbid();
+
+            _context.Defaults.Remove(defaultEntity);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

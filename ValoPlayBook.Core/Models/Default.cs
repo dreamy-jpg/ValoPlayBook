@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using ValoPlayBook.Core.Enums;
+﻿using ValoPlayBook.Core.Enums;
 
 namespace ValoPlayBook.Core.Models
 {
@@ -16,6 +15,7 @@ namespace ValoPlayBook.Core.Models
         public int? RoundNumber { get; set; }
         public string? OpponentTeamName { get; set; }
         public string? YoutubeUrl { get; set; }
+        public string? ImageUrl { get; set; }  // новое поле
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public int? CreatedByUserId { get; set; }

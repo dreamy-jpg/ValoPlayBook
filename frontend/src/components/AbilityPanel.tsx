@@ -1,4 +1,4 @@
-import type { StepAbilityDto } from '../types';
+import type { StepAbilityDto, AbilityDto } from '../types';
 
 interface AgentInfo {
   id: number;
@@ -7,8 +7,8 @@ interface AgentInfo {
 
 interface AbilityPanelProps {
   agents: AgentInfo[];
-  abilities: StepAbilityDto[];
   stepAbilities: StepAbilityDto[];
+  agentAbilities: Record<number, AbilityDto[]>;
 }
 
 function getAgentIconUrl(agentName: string): string {
@@ -19,46 +19,7 @@ function getAbilityIconUrl(agentName: string, abilityName: string): string {
   return `/agents/${agentName.toLowerCase()}/abilities_table/${abilityName.replace(/\s+/g, '_')}.png`;
 }
 
-const hardcodedAgentAbilities: Record<string, { name: string; maxCharges: number }[]> = {
-  Brimstone: [
-    { name: 'Incendiary', maxCharges: 1 },
-    { name: 'Stim Beacon', maxCharges: 2 },
-    { name: 'Sky Smoke', maxCharges: 3 },
-    { name: 'Orbital Strike', maxCharges: 1 },
-  ],
-  Jett: [
-    { name: 'Cloudburst', maxCharges: 3 },
-    { name: 'Updraft', maxCharges: 2 },
-    { name: 'Tailwind', maxCharges: 1 },
-    { name: 'Blade Storm', maxCharges: 1 },
-  ],
-  Omen: [
-    { name: 'Shrouded Step', maxCharges: 2 },
-    { name: 'Paranoia', maxCharges: 1 },
-    { name: 'Dark Cover', maxCharges: 2 },
-    { name: 'From the Shadows', maxCharges: 1 },
-  ],
-  Sova: [
-    { name: 'Owl Drone', maxCharges: 1 },
-    { name: 'Shock Bolt', maxCharges: 2 },
-    { name: 'Recon Bolt', maxCharges: 1 },
-    { name: "Hunter's Fury", maxCharges: 1 },
-  ],
-  Sage: [
-    { name: 'Barrier Orb', maxCharges: 1 },
-    { name: 'Slow Orb', maxCharges: 2 },
-    { name: 'Healing Orb', maxCharges: 1 },
-    { name: 'Resurrection', maxCharges: 1 },
-  ],
-  Phoenix: [
-    { name: 'Blaze', maxCharges: 1 },
-    { name: 'Curveball', maxCharges: 2 },
-    { name: 'Hot Hands', maxCharges: 1 },
-    { name: 'Run it Back', maxCharges: 1 },
-  ],
-};
-
-export default function AbilityPanel({ agents, abilities, stepAbilities }: AbilityPanelProps) {
+export default function AbilityPanel({ agents, stepAbilities, agentAbilities }: AbilityPanelProps) {
   const getUsedCharges = (agentName: string, abilityName: string): number => {
     return stepAbilities.filter(
       sa => sa.agentName === agentName && sa.abilityName === abilityName
@@ -70,7 +31,7 @@ export default function AbilityPanel({ agents, abilities, stepAbilities }: Abili
       <h3 className="text-lg font-semibold mb-3 text-white">Способности</h3>
       <div className="flex flex-wrap gap-6">
         {agents.map(agent => {
-          const abilitiesList = hardcodedAgentAbilities[agent.name] || [];
+          const abilitiesList = agentAbilities[agent.id] || [];
           return (
             <div key={agent.id} className="flex items-center gap-3 bg-gray-800 p-3 rounded">
               <img

@@ -4,13 +4,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ValoPlayBook.Data.Data;
 using ValoPlayBook.API.Services;
+using ValoPlayBook.API.Middlewares;   // <-- добавлен импорт
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(); // базовая настройка Swagger
+builder.Services.AddSwaggerGen();
 
 // Регистрация DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -79,6 +80,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowFrontend");
+
+// Глобальный обработчик ошибок
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

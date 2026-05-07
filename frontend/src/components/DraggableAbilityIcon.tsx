@@ -78,16 +78,16 @@ export default function DraggableAbilityIcon({
         ) : null;
 
       case 'Cone':
-        // Используем length вместо radius для конуса
         if (!ability.length || !ability.angle) return null;
-        const angleRad = (ability.angle * Math.PI) / 180;
-        const startX = 0;
-        const startY = 0;
-        const endX1 = ability.length * Math.sin(angleRad / 2);
-        const endY1 = -ability.length * Math.cos(angleRad / 2);
-        const endX2 = -ability.length * Math.sin(angleRad / 2);
-        const endY2 = -ability.length * Math.cos(angleRad / 2);
-        const pathData = `M ${startX},${startY} L ${endX1},${endY1} A ${ability.length},${ability.length} 0 0,1 ${endX2},${endY2} Z`;
+        const coneLength = ability.length;
+        const halfAngleRad = (ability.angle * Math.PI) / 360;
+        // Вычисляем точки на дуге (окружность радиуса length с центром в вершине)
+        const startX = coneLength * Math.sin(halfAngleRad);
+        const startY = -coneLength * Math.cos(halfAngleRad);
+        const endX = -coneLength * Math.sin(halfAngleRad);
+        const endY = -coneLength * Math.cos(halfAngleRad);
+        // Сектор: вершина -> левая точка -> дуга (против часовой) -> правая точка -> обратно к вершине
+        const pathData = `M 0,0 L ${startX},${startY} A ${coneLength},${coneLength} 0 0,0 ${endX},${endY} Z`;
         return (
           <path
             d={pathData}

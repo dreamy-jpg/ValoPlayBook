@@ -1,0 +1,174 @@
+Ñòðóêòóðà ïàïîê òîìà home
+Ñåðèéíûé íîìåð òîìà: BAC0-FF1E
+D:.
+¦   data.txt
+¦   ValoPlayBook.Data.csproj
+¦   
++---bin
+¦   L---Debug
+¦       L---net10.0
+¦           ¦   ValoPlayBook.Core.dll
+¦           ¦   ValoPlayBook.Core.pdb
+¦           ¦   ValoPlayBook.Data.deps.json
+¦           ¦   ValoPlayBook.Data.dll
+¦           ¦   ValoPlayBook.Data.pdb
+¦           ¦   ValoPlayBook.Data.runtimeconfig.json
+¦           ¦   
+¦           +---BuildHost-net472
+¦           ¦   ¦   Microsoft.Build.Locator.dll
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe
+¦           ¦   ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.exe.config
+¦           ¦   ¦   Microsoft.IO.Redist.dll
+¦           ¦   ¦   Newtonsoft.Json.dll
+¦           ¦   ¦   System.Buffers.dll
+¦           ¦   ¦   System.Collections.Immutable.dll
+¦           ¦   ¦   System.CommandLine.dll
+¦           ¦   ¦   System.Memory.dll
+¦           ¦   ¦   System.Numerics.Vectors.dll
+¦           ¦   ¦   System.Runtime.CompilerServices.Unsafe.dll
+¦           ¦   ¦   System.Threading.Tasks.Extensions.dll
+¦           ¦   ¦   
+¦           ¦   +---cs
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---de
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---es
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---fr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---it
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ja
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ko
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pl
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---pt-BR
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---ru
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---tr
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   +---zh-Hans
+¦           ¦   ¦       System.CommandLine.resources.dll
+¦           ¦   ¦       
+¦           ¦   L---zh-Hant
+¦           ¦           System.CommandLine.resources.dll
+¦           ¦           
+¦           L---BuildHost-netcore
+¦               ¦   Microsoft.Build.Locator.dll
+¦               ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.deps.json
+¦               ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+¦               ¦   Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.runtimeconfig.json
+¦               ¦   Newtonsoft.Json.dll
+¦               ¦   System.Collections.Immutable.dll
+¦               ¦   System.CommandLine.dll
+¦               ¦   
+¦               +---cs
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---de
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---es
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---fr
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---it
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---ja
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---ko
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---pl
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---pt-BR
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---ru
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---tr
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               +---zh-Hans
+¦               ¦       System.CommandLine.resources.dll
+¦               ¦       
+¦               L---zh-Hant
+¦                       System.CommandLine.resources.dll
+¦                       
++---Data
+¦       AppDbContext.cs
+¦       DbInitializer.Abilities.cs
+¦       DbInitializer.Agents.cs
+¦       DbInitializer.cs
+¦       DbInitializer.Defaults.cs
+¦       DbInitializer.Maps.cs
+¦       DbInitializer.Teams.cs
+¦       
++---Migrations
+¦       20260414171911_InitialCreate.cs
+¦       20260414171911_InitialCreate.Designer.cs
+¦       20260419132106_AddStepAbilitiesAndMaxCharges.cs
+¦       20260419132106_AddStepAbilitiesAndMaxCharges.Designer.cs
+¦       20260419163228_AddIsAttackerToStepPosition.cs
+¦       20260419163228_AddIsAttackerToStepPosition.Designer.cs
+¦       20260420130635_AddZoneTypeFields.cs
+¦       20260420130635_AddZoneTypeFields.Designer.cs
+¦       20260422211046_AddUserAndRefreshToken.cs
+¦       20260422211046_AddUserAndRefreshToken.Designer.cs
+¦       20260423151128_AddUserAvatarUrl.cs
+¦       20260423151128_AddUserAvatarUrl.Designer.cs
+¦       20260428175111_AddImageUrlToDefault.cs
+¦       20260428175111_AddImageUrlToDefault.Designer.cs
+¦       AppDbContextModelSnapshot.cs
+¦       
+L---obj
+    ¦   project.assets.json
+    ¦   project.nuget.cache
+    ¦   ValoPlayBook.Data.csproj.nuget.dgspec.json
+    ¦   ValoPlayBook.Data.csproj.nuget.g.props
+    ¦   ValoPlayBook.Data.csproj.nuget.g.targets
+    ¦   
+    L---Debug
+        L---net10.0
+            ¦   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+            ¦   ValoPlay.B8F84F24.Up2Date
+            ¦   ValoPlayBook.Data.AssemblyInfo.cs
+            ¦   ValoPlayBook.Data.AssemblyInfoInputs.cache
+            ¦   ValoPlayBook.Data.assets.cache
+            ¦   ValoPlayBook.Data.csproj.AssemblyReference.cache
+            ¦   ValoPlayBook.Data.csproj.BuildWithSkipAnalyzers
+            ¦   ValoPlayBook.Data.csproj.CoreCompileInputs.cache
+            ¦   ValoPlayBook.Data.csproj.FileListAbsolute.txt
+            ¦   ValoPlayBook.Data.dll
+            ¦   ValoPlayBook.Data.GeneratedMSBuildEditorConfig.editorconfig
+            ¦   ValoPlayBook.Data.genruntimeconfig.cache
+            ¦   ValoPlayBook.Data.GlobalUsings.g.cs
+            ¦   ValoPlayBook.Data.pdb
+            ¦   ValoPlayBook.Data.sourcelink.json
+            ¦   
+            +---ref
+            ¦       ValoPlayBook.Data.dll
+            ¦       
+            L---refint
+                    ValoPlayBook.Data.dll
+                    

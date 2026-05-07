@@ -11,6 +11,8 @@
         public int? RoundNumber { get; set; }
         public string? OpponentTeamName { get; set; }
         public string? YoutubeUrl { get; set; }
-        public int StepCount { get; set; } // количество шагов (для отображения)
+        public int StepCount { get; set; }
+        public int? CreatedByUserId { get; set; }  // <-- добавлено
+        public string? ImageUrl { get; set; }      // <-- добавлено
     }
 }

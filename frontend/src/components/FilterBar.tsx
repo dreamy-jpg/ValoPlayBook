@@ -1,39 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { MapDto, TeamDto } from '../types';
-import { fetchMaps, fetchTeams } from '../api/defaults';
 
 interface FilterBarProps {
+  maps: MapDto[];
+  teams: TeamDto[];
   onFilterChange: (filters: {
     mapId?: number;
     teamId?: number;
     side?: string;
-    roundNumber?: number;
   }) => void;
 }
 
-export default function FilterBar({ onFilterChange }: FilterBarProps) {
-  const [maps, setMaps] = useState<MapDto[]>([]);
-  const [teams, setTeams] = useState<TeamDto[]>([]);
+export default function FilterBar({ maps, teams, onFilterChange }: FilterBarProps) {
   const [selectedMapId, setSelectedMapId] = useState<number | undefined>(undefined);
   const [selectedTeamId, setSelectedTeamId] = useState<number | undefined>(undefined);
   const [selectedSide, setSelectedSide] = useState<string>('');
-  const [roundNumber, setRoundNumber] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    Promise.all([fetchMaps(), fetchTeams()])
-      .then(([mapsData, teamsData]) => {
-        setMaps(mapsData);
-        setTeams(teamsData);
-      })
-      .catch(err => console.error('Ошибка загрузки фильтров:', err));
-  }, []);
 
   const handleFilterChange = () => {
     onFilterChange({
       mapId: selectedMapId,
       teamId: selectedTeamId,
       side: selectedSide || undefined,
-      roundNumber: roundNumber,
     });
   };
 
@@ -41,7 +28,6 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
     setSelectedMapId(undefined);
     setSelectedTeamId(undefined);
     setSelectedSide('');
-    setRoundNumber(undefined);
     onFilterChange({});
   };
 
@@ -86,17 +72,6 @@ export default function FilterBar({ onFilterChange }: FilterBarProps) {
           <option value="Attack">Атака</option>
           <option value="Defense">Защита</option>
         </select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-300">Раунд (необяз.)</label>
-        <input
-          type="number"
-          className="mt-1 p-2 bg-gray-900 border border-gray-600 rounded w-24 text-white focus:ring-red-500 focus:border-red-500"
-          value={roundNumber ?? ''}
-          onChange={(e) => setRoundNumber(e.target.value ? Number(e.target.value) : undefined)}
-          min={1}
-        />
       </div>
 
       <button

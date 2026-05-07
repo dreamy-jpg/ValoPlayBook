@@ -129,7 +129,7 @@ namespace ValoPlayBook.API.Controllers
                 user.Email,
                 user.Username,
                 user.Role,
-                user.AvatarUrl  // <-- теперь отдаём аватарку
+                user.AvatarUrl
             });
         }
 
@@ -197,6 +197,28 @@ namespace ValoPlayBook.API.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { avatarUrl = user.AvatarUrl });
+        }
+
+        // Новый метод: смена пароля
+        [HttpPost("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return NotFound();
+
+            if (!_authService.VerifyPassword(dto.CurrentPassword, user.PasswordHash))
+                return BadRequest(new { message = "Текущий пароль неверен" });
+
+            user.PasswordHash = _authService.HashPassword(dto.NewPassword);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Пароль изменён" });
         }
     }
 }

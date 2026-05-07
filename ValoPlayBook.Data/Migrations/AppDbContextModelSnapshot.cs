@@ -133,6 +133,9 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<int>("MapId")
                         .HasColumnType("integer");
 

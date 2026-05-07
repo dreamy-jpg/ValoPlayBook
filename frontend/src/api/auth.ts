@@ -3,6 +3,7 @@ import type { LoginRequest, RegisterRequest, AuthResponse, RefreshResponse, User
 const API_BASE = '/api';
 
 let accessToken: string | null = null;
+let refreshPromise: Promise<string> | null = null;
 
 export const setAccessToken = (token: string | null) => {
   accessToken = token;
@@ -53,6 +54,50 @@ export async function refreshAccessToken(): Promise<string> {
   }
   const data: RefreshResponse = await response.json();
   return data.accessToken;
+}
+
+// Безопасный рефреш, сохраняющий токен и защищённый от повторных вызовов
+export async function refreshAccessTokenSafe(): Promise<string> {
+  if (refreshPromise) {
+    return refreshPromise;
+  }
+  refreshPromise = (async () => {
+    try {
+      const newToken = await refreshAccessToken();
+      setAccessToken(newToken);
+      return newToken;
+    } finally {
+      refreshPromise = null;
+    }
+  })();
+  return refreshPromise;
+}
+
+// Основная функция для авторизованных запросов с повтором при 401
+export async function fetchWithAuth(url: string, options: RequestInit = {}): Promise<Response> {
+  const token = getAccessToken();
+  const headers = new Headers(options.headers);
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  let response = await fetch(url, { ...options, headers });
+
+  if (response.status === 401 && token) {
+    try {
+      const newToken = await refreshAccessTokenSafe();
+      headers.set('Authorization', `Bearer ${newToken}`);
+      response = await fetch(url, { ...options, headers });
+    } catch {
+      // рефреш не удался – выбрасываем оригинальную ошибку
+      throw new Error('Unauthorized');
+    }
+  }
+
+  if (!response.ok) {
+    throw new Error(`Ошибка запроса: ${response.status}`);
+  }
+  return response;
 }
 
 export async function getCurrentUser(accessToken: string): Promise<User> {

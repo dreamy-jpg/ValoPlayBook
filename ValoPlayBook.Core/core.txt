@@ -1,0 +1,57 @@
+Ñòðóêòóðà ïàïîê òîìà home
+Ñåðèéíûé íîìåð òîìà: BAC0-FF1E
+D:.
+¦   core.txt
+¦   ValoPlayBook.Core.csproj
+¦   
++---bin
+¦   L---Debug
+¦       L---net10.0
+¦               ValoPlayBook.Core.deps.json
+¦               ValoPlayBook.Core.dll
+¦               ValoPlayBook.Core.pdb
+¦               
++---Enums
+¦       Side.cs
+¦       
++---Models
+¦       Ability.cs
+¦       Agent.cs
+¦       Comment.cs
+¦       Default.cs
+¦       DefaultStep.cs
+¦       Map.cs
+¦       RefreshToken.cs
+¦       StepAbility.cs
+¦       StepPosition.cs
+¦       Team.cs
+¦       User.cs
+¦       
+L---obj
+    ¦   project.assets.json
+    ¦   project.nuget.cache
+    ¦   ValoPlayBook.Core.csproj.nuget.dgspec.json
+    ¦   ValoPlayBook.Core.csproj.nuget.g.props
+    ¦   ValoPlayBook.Core.csproj.nuget.g.targets
+    ¦   
+    L---Debug
+        L---net10.0
+            ¦   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+            ¦   ValoPlayBook.Core.AssemblyInfo.cs
+            ¦   ValoPlayBook.Core.AssemblyInfoInputs.cache
+            ¦   ValoPlayBook.Core.assets.cache
+            ¦   ValoPlayBook.Core.csproj.BuildWithSkipAnalyzers
+            ¦   ValoPlayBook.Core.csproj.CoreCompileInputs.cache
+            ¦   ValoPlayBook.Core.csproj.FileListAbsolute.txt
+            ¦   ValoPlayBook.Core.dll
+            ¦   ValoPlayBook.Core.GeneratedMSBuildEditorConfig.editorconfig
+            ¦   ValoPlayBook.Core.GlobalUsings.g.cs
+            ¦   ValoPlayBook.Core.pdb
+            ¦   ValoPlayBook.Core.sourcelink.json
+            ¦   
+            +---ref
+            ¦       ValoPlayBook.Core.dll
+            ¦       
+            L---refint
+                    ValoPlayBook.Core.dll
+                    

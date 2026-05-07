@@ -1,0 +1,266 @@
+Ñòðóêòóðà ïàïîê òîìà home
+Ñåðèéíûé íîìåð òîìà: BAC0-FF1E
+D:.
+¦   abilities.txt
+¦   
++---astra
+¦   ¦   agentAstra.png
+¦   ¦   
+¦   L---abilities
+¦           Cosmic_Divide.png
+¦           Gravity_Well.png
+¦           Nebula_Dissipate.png
+¦           Nova_Pulse.png
+¦           
++---breach
+¦   ¦   agentBreach.png
+¦   ¦   
+¦   L---abilities
+¦           Aftershock.png
+¦           Fault_Line.png
+¦           Flashpoint.png
+¦           Rolling_Thunder.png
+¦           
++---brimstone
+¦   ¦   agentBrimstone.png
+¦   ¦   
+¦   L---abilities
+¦           Incendiary.png
+¦           Orbital_Strike.png
+¦           Sky_Smoke.png
+¦           Stim_Beacon.png
+¦           
++---chamber
+¦   ¦   agentChamber.png
+¦   ¦   
+¦   L---abilities
+¦           Headhunter.png
+¦           Rendezvous.png
+¦           Tour_De_Force.png
+¦           Trademark.png
+¦           
++---clove
+¦   ¦   agentClove.png
+¦   ¦   
+¦   L---abilities
+¦           Meddle.png
+¦           Not_Dead_Yet.png
+¦           Pick-me-up.png
+¦           Ruse.png
+¦           
++---cypher
+¦   ¦   agentCypher.png
+¦   ¦   
+¦   L---abilities
+¦           Cyber_Cage.png
+¦           Neural_Theft.png
+¦           Spycam.png
+¦           Trapwire.png
+¦           
++---deadlock
+¦   ¦   agentDeadlock.png
+¦   ¦   
+¦   L---abilities
+¦           Annihilation.png
+¦           Barrier_Mesh.png
+¦           GravNet.png
+¦           Sonic_Sensor.png
+¦           
++---fade
+¦   ¦   agentFade.png
+¦   ¦   
+¦   L---abilities
+¦           Haunt.png
+¦           Nightfall.png
+¦           Prowler.png
+¦           Seize.png
+¦           
++---gekko
+¦   ¦   agentGekko.png
+¦   ¦   
+¦   L---abilities
+¦           Dizzy.png
+¦           Mosh_Pit.png
+¦           Thrash.png
+¦           Wingman.png
+¦           
++---harbor
+¦   ¦   agentHarbor.png
+¦   ¦   
+¦   L---abilities
+¦           Cove.png
+¦           High_Tide.png
+¦           Reckoning.png
+¦           Storm_Surge.png
+¦           
++---iso
+¦   ¦   agentIso.png
+¦   ¦   
+¦   L---abilities
+¦           Contingency.png
+¦           Double_Tap.png
+¦           Kill_Contract.png
+¦           Undercut.png
+¦           
++---jett
+¦   ¦   agentJett.png
+¦   ¦   
+¦   L---abilities
+¦           Blade_Storm.png
+¦           Cloudburst.png
+¦           Tailwind.png
+¦           Updraft.png
+¦           
++---kayo
+¦   ¦   agentKayo.png
+¦   ¦   
+¦   L---abilities
+¦           FLASH-drive.png
+¦           FRAG-ment.png
+¦           NULL-cmd.png
+¦           ZERO-point.png
+¦           
++---killjoy
+¦   ¦   agentKilljoy.png
+¦   ¦   
+¦   L---abilities
+¦           Alarmbot.png
+¦           Lockdown.png
+¦           Nanoswarm.png
+¦           Turret.png
+¦           
++---miks
+¦   ¦   agentMiks.png
+¦   ¦   
+¦   L---abilities
+¦           Bassquake.png
+¦           Harmonize.png
+¦           M-pulse.png
+¦           Waveform.png
+¦           
++---neon
+¦   ¦   agentNeon.png
+¦   ¦   
+¦   L---abilities
+¦           Fast_Lane.png
+¦           High_Gear.png
+¦           Overdrive.png
+¦           Relay_Bolt.png
+¦           
++---omen
+¦   ¦   agentOmen.png
+¦   ¦   
+¦   L---abilities
+¦           Dark_Cover.png
+¦           From_the_Shadows.png
+¦           Paranoia.png
+¦           Shrouded_Step.png
+¦           
++---phoenix
+¦   ¦   agentPhoenix.png
+¦   ¦   
+¦   L---abilities
+¦           Blaze.png
+¦           Curveball.png
+¦           Hot_Hands.png
+¦           Run_it_Back.png
+¦           
++---raze
+¦   ¦   agentRaze.png
+¦   ¦   
+¦   L---abilities
+¦           Blast_Pack.png
+¦           Boom_Bot.png
+¦           Paint_Shells.png
+¦           Showstopper.png
+¦           
++---reyna
+¦   ¦   agentReyna.png
+¦   ¦   
+¦   L---abilities
+¦           Devour.png
+¦           Dismiss.png
+¦           Empress.png
+¦           Leer.png
+¦           
++---sage
+¦   ¦   agentSage.png
+¦   ¦   
+¦   L---abilities
+¦           Barrier_Orb.png
+¦           Healing_Orb.png
+¦           Resurrection.png
+¦           Slow_Orb.png
+¦           
++---skye
+¦   ¦   agentSkye.png
+¦   ¦   
+¦   L---abilities
+¦           Guiding_Light.png
+¦           Regrowth.png
+¦           Seekers.png
+¦           Trailblazer.png
+¦           
++---sova
+¦   ¦   agentSova.png
+¦   ¦   
+¦   L---abilities
+¦           Hunter's_Fury.png
+¦           Owl_Drone.png
+¦           Recon_Bolt.png
+¦           Shock_Bolt.png
+¦           
++---tejo
+¦   ¦   agentTejo.png
+¦   ¦   
+¦   L---abilities
+¦           Armageddon.png
+¦           Guided_Salvo.png
+¦           Special_Delivery.png
+¦           Stealth_Drone.png
+¦           
++---veto
+¦   ¦   agentVeto.png
+¦   ¦   
+¦   L---abilities
+¦           Chokehold.png
+¦           Crosscut.png
+¦           Evolution.png
+¦           Interceptor.png
+¦           
++---viper
+¦   ¦   agentViper.png
+¦   ¦   
+¦   L---abilities
+¦           Poison_Cloud.png
+¦           Snake_Bite.png
+¦           Toxic_Screen.png
+¦           Viper%27s_Pit.png
+¦           
++---vyse
+¦   ¦   agentVyse.png
+¦   ¦   
+¦   L---abilities
+¦           Arc_Rose.png
+¦           Razorvine.png
+¦           Shear.png
+¦           Steel_Garden.png
+¦           
++---waylay
+¦   ¦   agentWaylay.png
+¦   ¦   
+¦   L---abilities
+¦           Convergent_Paths.png
+¦           Lightspeed.png
+¦           Refract.png
+¦           Saturate.png
+¦           
+L---yoru
+    ¦   agentYoru.png
+    ¦   
+    L---abilities
+            Blindside.png
+            Dimensional_Drift.png
+            Fakeout.png
+            Gatecrash.png
+            
