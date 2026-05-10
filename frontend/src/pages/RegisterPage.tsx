@@ -1,6 +1,9 @@
+// RegisterPage.tsx (полный код)
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../api/auth';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
 import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
@@ -39,7 +42,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700">
+      <Card className="max-w-md w-full p-6">
         <h2 className="text-2xl font-bold text-center mb-6 text-white">Регистрация</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -90,13 +93,14 @@ export default function RegisterPage() {
             </div>
           )}
 
-          <button
+          <Button
             type="submit"
+            variant="danger"
+            fullWidth
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition"
           >
             {loading ? 'Регистрация...' : 'Зарегистрироваться'}
-          </button>
+          </Button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-400">
           Уже есть аккаунт?{' '}
@@ -104,7 +108,7 @@ export default function RegisterPage() {
             Войти
           </Link>
         </p>
-      </div>
+      </Card>
     </div>
   );
 }

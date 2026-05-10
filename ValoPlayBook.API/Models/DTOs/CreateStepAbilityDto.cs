@@ -21,23 +21,5 @@ namespace ValoPlayBook.API.Models.DTOs
 
         [Range(-180, 180)]
         public double? Rotation { get; set; }
-
-        [RegularExpression("Circle|Line|Rectangle|Cone", ErrorMessage = "Тип зоны должен быть Circle, Line, Rectangle или Cone")]
-        public string ZoneType { get; set; } = "Circle";
-
-        [Range(1, 500)]
-        public double? Radius { get; set; }
-
-        [Range(1, 1000)]
-        public double? Length { get; set; }
-
-        [Range(1, 500)]
-        public double? Width { get; set; }
-
-        [Range(1, 180)]
-        public double? Angle { get; set; }
-
-        [Range(1, 10, ErrorMessage = "Длительность должна быть от 1 до 10 шагов")]
-        public int DurationSteps { get; set; } = 1;
     }
 }

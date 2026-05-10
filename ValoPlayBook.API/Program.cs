@@ -1,10 +1,12 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ValoPlayBook.Data.Data;
+using System.Threading.RateLimiting;
+using ValoPlayBook.API.Middlewares;
 using ValoPlayBook.API.Services;
-using ValoPlayBook.API.Middlewares;   // <-- добавлен импорт
+using ValoPlayBook.Data.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Настройка Rate Limiter
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("LoginRateLimit", config =>
+    {
+        config.Window = TimeSpan.FromMinutes(1);
+        config.PermitLimit = 5;
+        config.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        config.QueueLimit = 0; // без очереди, сразу 429
+    });
+});
+
 var app = builder.Build();
 
 // Seed
@@ -80,6 +94,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowFrontend");
+
+// Rate Limiter middleware должен быть до маршрутизации и авторизации
+app.UseRateLimiter();
 
 // Глобальный обработчик ошибок
 app.UseMiddleware<ExceptionHandlingMiddleware>();

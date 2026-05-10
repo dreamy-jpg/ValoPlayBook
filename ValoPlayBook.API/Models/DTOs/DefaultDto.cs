@@ -11,7 +11,10 @@
         public int? RoundNumber { get; set; }
         public string? OpponentTeamName { get; set; }
         public string? YoutubeUrl { get; set; }
-        public string? ImageUrl { get; set; }     // <-- добавлено
+        public string? ImageUrl { get; set; }
+        public int? CreatedByUserId { get; set; }
+        public string? CreatedByUserName { get; set; }
+        public string? CreatedByUserAvatar { get; set; }
         public List<StepDto> Steps { get; set; } = new();
     }
 }

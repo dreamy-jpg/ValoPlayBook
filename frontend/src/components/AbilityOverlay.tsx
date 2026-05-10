@@ -1,4 +1,8 @@
+// AbilityOverlay.tsx (полный код)
 import type { StepAbilityDto, AbilityDto } from '../types';
+import { getAbilityIconUrl } from '../utils/iconUrls';
+import { Panel } from './ui/Panel';
+import AgentIcon from './ui/AgentIcon';
 
 interface AgentInfo {
   id: number;
@@ -12,16 +16,7 @@ interface AbilityOverlayProps {
   agentAbilities: Record<number, AbilityDto[]>;
 }
 
-function getAgentIconUrl(agentName: string): string {
-  return `/agents/${agentName.toLowerCase()}/agent${agentName}.png`;
-}
-
-function getAbilityIconUrl(agentName: string, abilityName: string): string {
-  return `/agents/${agentName.toLowerCase()}/abilities/${abilityName.replace(/\s+/g, '_')}.png`;
-}
-
 function ChargesRow({ used, max }: { used: number; max: number }) {
-  // Группируем точки по 4 в строке
   const rows: JSX.Element[] = [];
   for (let start = 0; start < max; start += 4) {
     const chunk = Array.from({ length: Math.min(4, max - start) }).map((_, i) => {
@@ -44,28 +39,26 @@ function ChargesRow({ used, max }: { used: number; max: number }) {
   return <div className="flex flex-col items-center mt-1">{rows}</div>;
 }
 
-function AgentRow({ agent, stepAbilities, bgColor, abilities }: {
+function AgentRow({
+  agent,
+  side,
+  stepAbilities,
+  abilities,
+}: {
   agent: AgentInfo;
+  side: 'attack' | 'defense';
   stepAbilities: StepAbilityDto[];
-  bgColor: string;
   abilities: AbilityDto[];
 }) {
   const getUsedCharges = (abilityName: string) =>
-    stepAbilities.filter(sa => sa.agentName === agent.name && sa.abilityName === abilityName).length;
+    stepAbilities.filter(
+      sa => sa.agentName === agent.name && sa.abilityName === abilityName
+    ).length;
 
   return (
-    <div className="flex items-center gap-3">
-      <div
-        className="w-9 h-9 rounded flex items-center justify-center"
-        style={{ backgroundColor: bgColor }}
-      >
-        <img
-          src={getAgentIconUrl(agent.name)}
-          alt={agent.name}
-          className="w-8 h-8 rounded"
-        />
-      </div>
-      <div className="flex gap-2">
+    <div className="flex items-center gap-4">
+      <AgentIcon agentName={agent.name} side={side} size="md" />
+      <div className="flex gap-4">
         {abilities.map((ab, idx) => {
           const used = getUsedCharges(ab.name);
           const max = ab.maxCharges;
@@ -74,7 +67,7 @@ function AgentRow({ agent, stepAbilities, bgColor, abilities }: {
               <img
                 src={getAbilityIconUrl(agent.name, ab.name)}
                 alt={ab.name}
-                className={`w-6 h-6 ${used === max ? 'opacity-40' : 'opacity-100'}`}
+                className={`w-8 h-8 ${used === max ? 'opacity-40' : 'opacity-100'}`}
                 title={`${ab.name} (${used}/${max})`}
               />
               {used > 0 && (
@@ -91,48 +84,43 @@ function AgentRow({ agent, stepAbilities, bgColor, abilities }: {
   );
 }
 
-export default function AbilityOverlay({ attackAgents, defenseAgents, stepAbilities, agentAbilities }: AbilityOverlayProps) {
+export default function AbilityOverlay({
+  attackAgents,
+  defenseAgents,
+  stepAbilities,
+  agentAbilities,
+}: AbilityOverlayProps) {
   return (
     <>
       {attackAgents.length > 0 && (
-        <div
-          className="absolute bottom-0 left-0 pointer-events-none p-4"
-          style={{ transform: 'scale(calc(var(--map-scale, 1) * 1.25))', transformOrigin: 'bottom left' }}
-        >
-          <div className="bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-            <div className="flex flex-col gap-3">
-              {attackAgents.map(agent => (
-                <AgentRow
-                  key={agent.id}
-                  agent={agent}
-                  stepAbilities={stepAbilities}
-                  bgColor="#cc5555"
-                  abilities={agentAbilities[agent.id] || []}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="absolute bottom-4 left-4 z-10 pointer-events-none w-79">
+          <Panel className="p-3 flex flex-col gap-3">
+            {attackAgents.map(agent => (
+              <AgentRow
+                key={agent.id}
+                agent={agent}
+                side="attack"
+                stepAbilities={stepAbilities}
+                abilities={agentAbilities[agent.id] || []}
+              />
+            ))}
+          </Panel>
         </div>
       )}
 
       {defenseAgents.length > 0 && (
-        <div
-          className="absolute bottom-0 right-0 pointer-events-none p-4"
-          style={{ transform: 'scale(calc(var(--map-scale, 1) * 1.25))', transformOrigin: 'bottom right' }}
-        >
-          <div className="bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg">
-            <div className="flex flex-col gap-3">
-              {defenseAgents.map(agent => (
-                <AgentRow
-                  key={agent.id}
-                  agent={agent}
-                  stepAbilities={stepAbilities}
-                  bgColor="#5f9f9f"
-                  abilities={agentAbilities[agent.id] || []}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="absolute bottom-4 right-4 z-10 pointer-events-none w-79">
+          <Panel className="p-3 flex flex-col gap-3">
+            {defenseAgents.map(agent => (
+              <AgentRow
+                key={agent.id}
+                agent={agent}
+                side="defense"
+                stepAbilities={stepAbilities}
+                abilities={agentAbilities[agent.id] || []}
+              />
+            ))}
+          </Panel>
         </div>
       )}
     </>

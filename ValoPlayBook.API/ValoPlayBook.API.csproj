@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ValoPlayBook.Data\ValoPlayBook.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\defaults\" />
+  </ItemGroup>
+
 </Project>

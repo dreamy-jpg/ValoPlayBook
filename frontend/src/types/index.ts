@@ -4,6 +4,12 @@ export interface AbilityDto {
   type: string;
   maxCharges: number;
   iconUrl?: string | null;
+  zoneType: 'Circle' | 'Line' | 'Rectangle' | 'Cone';
+  defaultRadius?: number | null;
+  defaultLength?: number | null;
+  defaultWidth?: number | null;
+  defaultAngle?: number | null;
+  defaultDurationSteps: number;
 }
 
 export interface AgentDto {
@@ -27,7 +33,7 @@ export interface MapDto {
 }
 
 export interface PositionDto {
-  id: number; // новое поле
+  id: number;
   agentId: number;
   agentName: string;
   x: number;
@@ -72,7 +78,10 @@ export interface DefaultDto {
   roundNumber?: number | null;
   opponentTeamName?: string | null;
   youtubeUrl?: string | null;
-  imageUrl?: string | null; // новое
+  imageUrl?: string | null;
+  createdByUserId?: number | null;
+  createdByUserName?: string | null;
+  createdByUserAvatar?: string | null;
   steps: StepDto[];
 }
 
@@ -82,7 +91,7 @@ export interface CommentDto {
   authorEmail?: string | null;
   content: string;
   createdAt: string;
-  userId?: number | null;   // <-- добавлено
+  userId?: number | null;
 }
 
 export interface CreateCommentDto {
@@ -95,12 +104,6 @@ export interface UpdateStepAbilityDto {
   x?: number;
   y?: number;
   rotation?: number | null;
-  radius?: number | null;
-  length?: number | null;
-  width?: number | null;
-  angle?: number | null;
-  durationSteps?: number;
-  zoneType?: string;
 }
 
 export interface DefaultListItemDto {
@@ -115,9 +118,8 @@ export interface DefaultListItemDto {
   youtubeUrl?: string;
   stepCount: number;
   createdByUserId?: number | null;
-  imageUrl?: string | null; // новое
+  imageUrl?: string | null;
 }
-
 
 export interface PagedResult<T> {
   items: T[];

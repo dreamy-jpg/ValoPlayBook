@@ -117,5 +117,59 @@ namespace ValoPlayBook.API.Services
             }
             await _context.SaveChangesAsync();
         }
+
+        // Ротация refresh-токена с защитой от повторного использования
+        // Возвращает новый refresh-токен (строку) и пользователя
+        public async Task<(string RefreshToken, User User)> RotateRefreshTokenAsync(string oldToken)
+        {
+            // Ищем точное совпадение токена
+            var storedToken = await _context.RefreshTokens
+                .Include(rt => rt.User)
+                .FirstOrDefaultAsync(rt => rt.Token == oldToken);
+
+            if (storedToken == null)
+            {
+                // Токен вообще не существует
+                throw new UnauthorizedAccessException("Invalid refresh token");
+            }
+
+            if (storedToken.IsRevoked)
+            {
+                // Токен уже был отозван – повторное использование!
+                // Отзываем все токены пользователя (принудительный выход)
+                await RevokeAllUserTokensAsync(storedToken.UserId);
+                throw new UnauthorizedAccessException("Token reuse detected. All sessions have been revoked.");
+            }
+
+            if (storedToken.ExpiresAt <= DateTime.UtcNow)
+            {
+                // Токен истёк, но не отозван – просто отзываем
+                storedToken.IsRevoked = true;
+                await _context.SaveChangesAsync();
+                throw new UnauthorizedAccessException("Refresh token expired");
+            }
+
+            // Токен валиден – отзываем его
+            storedToken.IsRevoked = true;
+            await _context.SaveChangesAsync();
+
+            // Выпускаем новый refresh-токен для того же пользователя
+            var newRefreshToken = GenerateRefreshToken();
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var expirationDays = Convert.ToInt32(jwtSettings["RefreshTokenExpirationDays"] ?? "7");
+            var newTokenEntity = new RefreshToken
+            {
+                Token = newRefreshToken,
+                UserId = storedToken.UserId,
+                ExpiresAt = DateTime.UtcNow.AddDays(expirationDays),
+                CreatedAt = DateTime.UtcNow,
+                IsRevoked = false
+            };
+
+            _context.RefreshTokens.Add(newTokenEntity);
+            await _context.SaveChangesAsync();
+
+            return (newRefreshToken, storedToken.User);
+        }
     }
 }

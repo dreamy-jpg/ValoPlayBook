@@ -1,7 +1,11 @@
+// ProfilePage.tsx (полный код)
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { fetchDefaults, deleteDefault } from '../api/defaults';
+import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import ImgWithFallback from '../components/ui/ImgWithFallback';
 import type { DefaultListItemDto } from '../types';
 import toast from 'react-hot-toast';
 
@@ -76,7 +80,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen px-4 py-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <div className="bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700">
+        <Card className="p-6">
           <h1 className="text-2xl font-bold mb-6 text-white">Профиль пользователя</h1>
           <div className="flex items-start gap-6 mb-6">
             <div className="flex-shrink-0 relative group cursor-pointer" onClick={handleAvatarClick} title="Нажмите, чтобы загрузить фото">
@@ -97,13 +101,19 @@ export default function ProfilePage() {
                 {editing ? (
                   <div className="flex items-center gap-2 mt-1">
                     <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} className="bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white flex-1 focus:ring-teal-500 focus:border-teal-500" autoFocus />
-                    <button onClick={handleSave} disabled={saving} className="px-3 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition disabled:opacity-50">{saving ? 'Сохранение...' : 'Сохранить'}</button>
-                    <button onClick={handleCancelEdit} className="px-3 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition">Отмена</button>
+                    <Button variant="accent" size="sm" onClick={handleSave} disabled={saving}>
+                      {saving ? 'Сохранение...' : 'Сохранить'}
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={handleCancelEdit}>
+                      Отмена
+                    </Button>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-lg text-white">{user.username}</span>
-                    <button onClick={handleStartEdit} className="text-teal-400 hover:text-teal-300 text-sm transition">Изменить</button>
+                    <Button variant="ghost" size="sm" onClick={handleStartEdit}>
+                      Изменить
+                    </Button>
                   </div>
                 )}
               </div>
@@ -121,12 +131,19 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-          <div className="pt-4 border-t border-gray-700">
-            <button onClick={handleLogout} className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition shadow-sm">Выйти из аккаунта</button>
+          <div className="pt-4 border-t border-gray-700 space-y-2">
+            <div className="flex gap-2">
+              <Button variant="secondary" asChild>
+                <Link to="/change-password">Сменить пароль</Link>
+              </Button>
+              <Button variant="danger" onClick={handleLogout}>
+                Выйти из аккаунта
+              </Button>
+            </div>
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-gray-800 rounded-lg shadow-md p-6 border border-gray-700">
+        <Card className="p-6">
           <h2 className="text-xl font-bold mb-4 text-white">Мои тактики</h2>
           {loadingDefaults ? (
             <p className="text-gray-400">Загрузка...</p>
@@ -135,26 +152,27 @@ export default function ProfilePage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {userDefaults.map(def => (
-                <div key={def.id} className="bg-gray-700 border border-gray-600 rounded-lg overflow-hidden relative">
-                  <img
+                <Card key={def.id} className="overflow-hidden">
+                  <ImgWithFallback
                     src={def.imageUrl || `/maps/${def.map.name.toLowerCase()}/${def.map.name.toLowerCase()}_preview.png`}
                     alt={def.map.name}
                     className="w-full h-32 object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).src = '/maps/_fallback.png'; }}
                   />
                   <div className="p-4">
                     <Link to={`/defaults/${def.id}`} className="font-semibold text-white hover:text-teal-400 truncate block">{def.title}</Link>
                     <p className="text-sm text-gray-400">{def.team.name} · {def.side === 'Attack' ? 'Атака' : 'Защита'}</p>
                     <div className="mt-2 flex justify-between items-center">
                       <span className="text-xs text-gray-500">Шагов: {def.stepCount}</span>
-                      <button onClick={() => handleDelete(def.id)} className="text-red-400 hover:text-red-300 text-sm">🗑️</button>
+                      <Button variant="ghost" size="sm" onClick={() => handleDelete(def.id)}>
+                        🗑️
+                      </Button>
                     </div>
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );

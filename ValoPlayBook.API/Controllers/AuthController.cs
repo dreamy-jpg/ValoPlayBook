@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// AuthController.cs (полный код)
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting; // <-- добавлен импорт
 using Microsoft.EntityFrameworkCore;
 using ValoPlayBook.API.Models.DTOs;
 using ValoPlayBook.API.Services;
@@ -48,6 +50,7 @@ namespace ValoPlayBook.API.Controllers
         }
 
         [HttpPost("login")]
+        [EnableRateLimiting("LoginRateLimit")] // <-- добавлен атрибут
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
@@ -85,18 +88,37 @@ namespace ValoPlayBook.API.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh()
         {
-            var refreshToken = Request.Cookies["RefreshToken"];
-            if (string.IsNullOrEmpty(refreshToken))
+            var oldRefreshToken = Request.Cookies["RefreshToken"];
+            if (string.IsNullOrEmpty(oldRefreshToken))
                 return Unauthorized(new { message = "Refresh token not found" });
 
-            var storedToken = await _authService.GetValidRefreshTokenAsync(refreshToken);
-            if (storedToken == null)
-                return Unauthorized(new { message = "Invalid or expired refresh token" });
+            try
+            {
+                // Ротация токена: старый отзывается, выпускается новый
+                var (newRefreshToken, user) = await _authService.RotateRefreshTokenAsync(oldRefreshToken);
 
-            var user = storedToken.User;
-            var newAccessToken = _authService.GenerateAccessToken(user);
+                var newAccessToken = _authService.GenerateAccessToken(user);
 
-            return Ok(new { AccessToken = newAccessToken });
+                var jwtSettings = _configuration.GetSection("Jwt");
+                var refreshExpirationDays = Convert.ToInt32(jwtSettings["RefreshTokenExpirationDays"] ?? "7");
+
+                // Устанавливаем новую куку
+                Response.Cookies.Append("RefreshToken", newRefreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTimeOffset.UtcNow.AddDays(refreshExpirationDays)
+                });
+
+                return Ok(new { AccessToken = newAccessToken });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Очищаем куку при ошибке
+                Response.Cookies.Delete("RefreshToken");
+                return Unauthorized(new { message = ex.Message });
+            }
         }
 
         [HttpPost("logout")]
@@ -168,6 +190,10 @@ namespace ValoPlayBook.API.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest(new { message = "Файл не выбран" });
 
+            // Проверка размера файла (5 МБ)
+            if (file.Length > 5 * 1024 * 1024)
+                return BadRequest(new { message = "Файл не должен превышать 5 МБ" });
+
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
             var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
             if (!allowedExtensions.Contains(extension))
@@ -184,6 +210,14 @@ namespace ValoPlayBook.API.Controllers
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "avatars");
             if (!Directory.Exists(uploadsFolder))
                 Directory.CreateDirectory(uploadsFolder);
+
+            // Удаляем старый файл, если он существует
+            if (!string.IsNullOrEmpty(user.AvatarUrl))
+            {
+                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.AvatarUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
+                    System.IO.File.Delete(oldFilePath);
+            }
 
             var fileName = $"{userId}_{Guid.NewGuid()}{extension}";
             var filePath = Path.Combine(uploadsFolder, fileName);

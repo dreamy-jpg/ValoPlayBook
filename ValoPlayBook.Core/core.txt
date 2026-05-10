@@ -1,6 +1,6 @@
 Структура папок тома home
 Серийный номер тома: BAC0-FF1E
-D:.
+D:\WEB_PROJECT\VALOPLAYBOOK\VALOPLAYBOOK.CORE
 ¦   core.txt
 ¦   ValoPlayBook.Core.csproj
 ¦   
@@ -12,6 +12,7 @@ D:.
 ¦               ValoPlayBook.Core.pdb
 ¦               
 +---Enums
+¦       AbilityZoneType.cs
 ¦       Side.cs
 ¦       
 +---Models

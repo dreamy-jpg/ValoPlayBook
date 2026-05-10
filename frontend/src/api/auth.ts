@@ -145,3 +145,15 @@ export async function uploadAvatar(accessToken: string, file: File): Promise<str
   const data = await response.json();
   return data.avatarUrl;
 }
+
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  const response = await fetchWithAuth(`${API_BASE}/auth/change-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Ошибка смены пароля');
+  }
+}

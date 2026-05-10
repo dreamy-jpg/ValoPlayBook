@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import AgentEditor from './AgentEditor';
+import { Button } from './ui/Button';
+import { Card, CardContent } from './ui/Card';
 import type { PositionDto, StepAbilityDto, AgentDto, AbilityDto } from '../types';
 
 interface RightPanelProps {
@@ -22,7 +24,7 @@ interface RightPanelProps {
   onAgentReplaced: (pos: PositionDto) => void;
   onAbilityAdded: (ability: StepAbilityDto) => void;
   onAbilityDeleted: (abilityId: number) => void;
-  onAbilityUpdated: (ability: StepAbilityDto) => void;   // новый пропс
+  onAbilityUpdated: (ability: StepAbilityDto) => void;
   onCreateAgent: (agentId: number) => void;
   onCommentUpdate: (stepId: number, comment: string) => void;
 }
@@ -47,7 +49,7 @@ export default function RightPanel({
   onAgentReplaced,
   onAbilityAdded,
   onAbilityDeleted,
-  onAbilityUpdated,   // новый пропс
+  onAbilityUpdated,
   onCreateAgent,
   onCommentUpdate,
 }: RightPanelProps) {
@@ -74,54 +76,53 @@ export default function RightPanel({
 
       {isAdmin && editMode ? (
         <>
-          <div className="bg-gray-800 p-4 rounded border border-gray-700">
+          <Card className="p-4">
             {editingComment ? (
               <div>
                 <textarea
                   value={draftComment}
                   onChange={e => setDraftComment(e.target.value)}
-                  className="w-full p-2 bg-gray-900 border border-gray-600 rounded text-white text-sm"
+                  className="w-full p-2 bg-dark-300 border border-gray-600 rounded text-white text-sm"
                   rows={3}
                 />
                 <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={handleSaveComment}
-                    disabled={savingComment}
-                    className="px-3 py-1 bg-teal-600 text-white rounded text-sm hover:bg-teal-700 disabled:opacity-50"
-                  >
+                  <Button variant="primary" size="sm" onClick={handleSaveComment} disabled={savingComment}>
                     {savingComment ? 'Сохранение...' : 'Сохранить'}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => {
                       setEditingComment(false);
                       setDraftComment(comment || '');
                     }}
-                    className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-500"
                   >
                     Отмена
-                  </button>
+                  </Button>
                 </div>
               </div>
             ) : (
               <p className="text-gray-300">{comment || 'Нет комментария'}</p>
             )}
-          </div>
+          </Card>
           {!editingComment && (
-            <button
+            <Button
+              variant="accent"
+              size="sm"
+              className="mt-2"
               onClick={() => {
                 setDraftComment(comment || '');
                 setEditingComment(true);
               }}
-              className="mt-2 px-3 py-1 bg-teal-500 text-white rounded text-sm hover:bg-teal-600 transition"
             >
               ✎ Редактировать
-            </button>
+            </Button>
           )}
         </>
       ) : (
-        <div className="bg-gray-800 p-4 rounded border border-gray-700">
+        <Card className="p-4">
           <p className="text-gray-300">{comment || 'Нет комментария'}</p>
-        </div>
+        </Card>
       )}
 
       {showEditor && (
@@ -139,7 +140,7 @@ export default function RightPanel({
           onAgentReplaced={onAgentReplaced}
           onAbilityAdded={onAbilityAdded}
           onAbilityDeleted={onAbilityDeleted}
-          onAbilityUpdated={onAbilityUpdated}   // передаём колбэк
+          onAbilityUpdated={onAbilityUpdated}
           onCreateAgent={onCreateAgent}
         />
       )}

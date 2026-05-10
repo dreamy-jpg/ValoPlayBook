@@ -33,6 +33,21 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<int>("AgentId")
                         .HasColumnType("integer");
 
+                    b.Property<double?>("DefaultAngle")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("DefaultDurationSteps")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("DefaultLength")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("DefaultRadius")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("DefaultWidth")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -49,6 +64,9 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("ZoneType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -265,22 +283,7 @@ namespace ValoPlayBook.Data.Migrations
                     b.Property<int>("AgentId")
                         .HasColumnType("integer");
 
-                    b.Property<double?>("Angle")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("DurationSteps")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("Length")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Radius")
-                        .HasColumnType("double precision");
-
                     b.Property<double?>("Rotation")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Width")
                         .HasColumnType("double precision");
 
                     b.Property<double?>("X")
@@ -288,9 +291,6 @@ namespace ValoPlayBook.Data.Migrations
 
                     b.Property<double?>("Y")
                         .HasColumnType("double precision");
-
-                    b.Property<int>("ZoneType")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

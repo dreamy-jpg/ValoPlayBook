@@ -107,12 +107,34 @@ public class CommentsController : ControllerBase
             return Unauthorized();
 
         var isAdmin = User.IsInRole("Admin");
-        // Админ может удалить любой комментарий.
-        // Обычный пользователь может удалить только свой комментарий (если UserId != null и совпадает).
         if (!isAdmin && (comment.UserId == null || comment.UserId != userId))
             return Forbid();
 
         _context.Comments.Remove(comment);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    // Новый метод: редактирование комментария
+    [HttpPut("{commentId}")]
+    [Authorize]
+    public async Task<IActionResult> UpdateComment(int defaultId, int commentId, UpdateCommentDto dto)
+    {
+        var comment = await _context.Comments
+            .FirstOrDefaultAsync(c => c.Id == commentId && c.DefaultId == defaultId);
+        if (comment == null) return NotFound();
+
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            return Unauthorized();
+
+        var isAdmin = User.IsInRole("Admin");
+        // Редактировать может админ или автор комментария (если UserId != null и совпадает)
+        if (!isAdmin && (comment.UserId == null || comment.UserId != userId))
+            return Forbid();
+
+        comment.Content = dto.Content;
         await _context.SaveChangesAsync();
 
         return NoContent();

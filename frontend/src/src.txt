@@ -1,0 +1,67 @@
+Ñòðóêòóðà ïàïîê òîìà home
+Ñåðèéíûé íîìåð òîìà: BAC0-FF1E
+D:\WEB_PROJECT\VALOPLAYBOOK\FRONTEND\SRC
+¦   App.tsx
+¦   index.css
+¦   main.tsx
+¦   src.txt
+¦   tree.txt
+¦   
++---api
+¦       auth.ts
+¦       defaults.ts
+¦       
++---assets
+¦       hero.png
+¦       react.svg
+¦       vite.svg
+¦       
++---components
+¦   ¦   AbilityOverlay.tsx
+¦   ¦   AbilityPanel.tsx
+¦   ¦   AgentEditor.tsx
+¦   ¦   AgentSlots.tsx
+¦   ¦   CanvasMap.tsx
+¦   ¦   CommentSection.tsx
+¦   ¦   FilterBar.tsx
+¦   ¦   Header.tsx
+¦   ¦   ProtectedRoute.tsx
+¦   ¦   RightPanel.tsx
+¦   ¦   StepPanel.tsx
+¦   ¦   StepSelector.tsx
+¦   ¦   
+¦   L---ui
+¦           Avatar.tsx
+¦           Badge.tsx
+¦           Button.tsx
+¦           Card.tsx
+¦           Panel.tsx
+¦           
++---context
+¦       AuthContext.tsx
+¦       
++---hooks
+¦       useAbilityActions.ts
+¦       useAgentActions.ts
+¦       useDefaultData.ts
+¦       useStepActions.ts
+¦       
++---lib
+¦       utils.ts
+¦       
++---pages
+¦       LandingPage.tsx
+¦       LoginPage.tsx
+¦       NewTacticPage.tsx
+¦       ProfilePage.tsx
+¦       RegisterPage.tsx
+¦       TacticListPage.tsx
+¦       TacticMapPage.tsx
+¦       TacticPreviewPage.tsx
+¦       
++---types
+¦       index.ts
+¦       
+L---utils
+        iconUrls.ts
+        

@@ -89,6 +89,7 @@ namespace ValoPlayBook.API.Controllers
             var defaultEntity = await _context.Defaults
                 .Include(d => d.Team)
                 .Include(d => d.Map)
+                .Include(d => d.CreatedByUser) // <-- добавлено
                 .Include(d => d.Steps)
                     .ThenInclude(s => s.Positions)
                         .ThenInclude(p => p.Agent)
@@ -275,6 +276,55 @@ namespace ValoPlayBook.API.Controllers
             _context.Defaults.Remove(defaultEntity);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+
+        [HttpPost("{id}/image")]
+        [Authorize]
+        public async Task<IActionResult> UploadImage(int id, IFormFile file)
+        {
+            var defaultEntity = await _context.Defaults.FindAsync(id);
+            if (defaultEntity == null) return NotFound();
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var currentUserId))
+                return Unauthorized();
+            bool isAdmin = User.IsInRole("Admin");
+            if (!isAdmin && defaultEntity.CreatedByUserId != currentUserId)
+                return Forbid();
+
+            if (file == null || file.Length == 0)
+                return BadRequest("Файл не выбран");
+
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+            var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(ext))
+                return BadRequest("Недопустимый формат файла. Разрешены: jpg, png, gif, webp");
+
+            if (file.Length > 5 * 1024 * 1024) // 5 MB
+                return BadRequest("Файл не должен превышать 5 МБ");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "defaults");
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var fileName = $"{id}_{DateTime.Now.Ticks}{ext}";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            if (!string.IsNullOrEmpty(defaultEntity.ImageUrl))
+            {
+                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", defaultEntity.ImageUrl.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
+                    System.IO.File.Delete(oldFilePath);
+            }
+
+            defaultEntity.ImageUrl = $"/uploads/defaults/{fileName}";
+            await _context.SaveChangesAsync();
+
+            return Ok(new { imageUrl = defaultEntity.ImageUrl });
         }
     }
 }

@@ -29,7 +29,6 @@ namespace ValoPlayBook.Data.Data
             var reyna = context.Agents.FirstOrDefault(a => a.Name == "Reyna");
             var sage = context.Agents.FirstOrDefault(a => a.Name == "Sage");
 
-            // Если хотя бы один агент не найден, прерываем создание
             if (jett == null || sova == null || omen == null || killjoy == null || raze == null ||
                 brimstone == null || cypher == null || fade == null || reyna == null || sage == null)
                 return;
@@ -55,6 +54,7 @@ namespace ValoPlayBook.Data.Data
             context.DefaultSteps.AddRange(step1, step2, step3, step4);
             context.SaveChanges();
 
+            // Позиции агентов (без изменений)
             var attackPositions = new[]
             {
                 new StepPosition { StepId = step1.Id, AgentId = jett.Id, X = 120, Y = 100, IsAttacker = true },
@@ -107,7 +107,7 @@ namespace ValoPlayBook.Data.Data
             context.StepPositions.AddRange(defensePositions);
             context.SaveChanges();
 
-            // Получаем способности с проверкой на null
+            // Способности: теперь только X, Y, Rotation (геометрия из Ability)
             var skySmokeBrim = context.Abilities.FirstOrDefault(a => a.Name == "Sky Smoke" && a.AgentId == brimstone.Id);
             var darkCoverOmen = context.Abilities.FirstOrDefault(a => a.Name == "Dark Cover" && a.AgentId == omen.Id);
             var reconBoltSova = context.Abilities.FirstOrDefault(a => a.Name == "Recon Bolt" && a.AgentId == sova.Id);
@@ -118,28 +118,27 @@ namespace ValoPlayBook.Data.Data
             var leerReyna = context.Abilities.FirstOrDefault(a => a.Name == "Leer" && a.AgentId == reyna.Id);
             var slowOrbSage = context.Abilities.FirstOrDefault(a => a.Name == "Slow Orb" && a.AgentId == sage.Id);
 
-            // Создаём способности только если все найдены
             if (skySmokeBrim != null && darkCoverOmen != null && reconBoltSova != null &&
                 boomBotRaze != null && nanoswarmKilljoy != null && trapwireCypher != null &&
                 hauntFade != null && leerReyna != null && slowOrbSage != null)
             {
                 var step2Abilities = new StepAbility[]
                 {
-                    new StepAbility { ActivationStepId = step2.Id, AbilityId = darkCoverOmen.Id, AgentId = omen.Id, X = 550, Y = 150, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
-                    new StepAbility { ActivationStepId = step2.Id, AbilityId = reconBoltSova.Id, AgentId = sova.Id, X = 400, Y = 200, Rotation = 45, ZoneType = AbilityZoneType.Circle, Radius = 30, DurationSteps = 1 },
-                    new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 350, Y = 250, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
-                    new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 450, Y = 200, ZoneType = AbilityZoneType.Circle, Radius = 45, DurationSteps = 2 },
-                    new StepAbility { ActivationStepId = step2.Id, AbilityId = trapwireCypher.Id, AgentId = cypher.Id, X = 500, Y = 300, Rotation = 0, ZoneType = AbilityZoneType.Line, Length = 80, DurationSteps = 1 },
+                    new StepAbility { ActivationStepId = step2.Id, AbilityId = darkCoverOmen.Id, AgentId = omen.Id, X = 550, Y = 150, Rotation = 0 },
+                    new StepAbility { ActivationStepId = step2.Id, AbilityId = reconBoltSova.Id, AgentId = sova.Id, X = 400, Y = 200, Rotation = 45 },
+                    new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 350, Y = 250, Rotation = 0 },
+                    new StepAbility { ActivationStepId = step2.Id, AbilityId = skySmokeBrim.Id, AgentId = brimstone.Id, X = 450, Y = 200, Rotation = 0 },
+                    new StepAbility { ActivationStepId = step2.Id, AbilityId = trapwireCypher.Id, AgentId = cypher.Id, X = 500, Y = 300, Rotation = 0 },
                 };
                 context.StepAbilities.AddRange(step2Abilities);
 
                 var step3Abilities = new StepAbility[]
                 {
-                    new StepAbility { ActivationStepId = step3.Id, AbilityId = boomBotRaze.Id, AgentId = raze.Id, X = 250, Y = 400, Rotation = 90, ZoneType = AbilityZoneType.Line, Length = 100, DurationSteps = 1 },
-                    new StepAbility { ActivationStepId = step3.Id, AbilityId = nanoswarmKilljoy.Id, AgentId = killjoy.Id, X = 300, Y = 350, ZoneType = AbilityZoneType.Circle, Radius = 25, DurationSteps = 1 },
-                    new StepAbility { ActivationStepId = step3.Id, AbilityId = hauntFade.Id, AgentId = fade.Id, X = 400, Y = 150, ZoneType = AbilityZoneType.Circle, Radius = 35, DurationSteps = 1 },
-                    new StepAbility { ActivationStepId = step3.Id, AbilityId = leerReyna.Id, AgentId = reyna.Id, X = 300, Y = 350, Rotation = 180, ZoneType = AbilityZoneType.Cone, Angle = 60, Length = 100, DurationSteps = 1 },
-                    new StepAbility { ActivationStepId = step3.Id, AbilityId = slowOrbSage.Id, AgentId = sage.Id, X = 600, Y = 400, ZoneType = AbilityZoneType.Circle, Radius = 30, DurationSteps = 1 },
+                    new StepAbility { ActivationStepId = step3.Id, AbilityId = boomBotRaze.Id, AgentId = raze.Id, X = 250, Y = 400, Rotation = 90 },
+                    new StepAbility { ActivationStepId = step3.Id, AbilityId = nanoswarmKilljoy.Id, AgentId = killjoy.Id, X = 300, Y = 350, Rotation = 0 },
+                    new StepAbility { ActivationStepId = step3.Id, AbilityId = hauntFade.Id, AgentId = fade.Id, X = 400, Y = 150, Rotation = 0 },
+                    new StepAbility { ActivationStepId = step3.Id, AbilityId = leerReyna.Id, AgentId = reyna.Id, X = 300, Y = 350, Rotation = 180 },
+                    new StepAbility { ActivationStepId = step3.Id, AbilityId = slowOrbSage.Id, AgentId = sage.Id, X = 600, Y = 400, Rotation = 0 },
                 };
                 context.StepAbilities.AddRange(step3Abilities);
             }

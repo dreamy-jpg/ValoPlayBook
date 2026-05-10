@@ -1,6 +1,6 @@
 Структура папок тома home
 Серийный номер тома: BAC0-FF1E
-D:.
+D:\WEB_PROJECT\VALOPLAYBOOK\VALOPLAYBOOK.API
 ¦   api.txt
 ¦   appsettings.Development.json
 ¦   appsettings.json
@@ -276,6 +276,8 @@ D:.
 ¦   ¦   PagedResult.cs
 ¦   ¦   
 ¦   L---DTOs
+¦           AbilityDto.cs
+¦           AgentDto.cs
 ¦           AuthDtos.cs
 ¦           ChangePasswordDto.cs
 ¦           CommentDto.cs
@@ -354,7 +356,10 @@ D:.
 ¦       AuthService.cs
 ¦       
 L---wwwroot
-    L---avatars
-            1_be749f8c-3afe-453f-b48b-15877c9f5eb8.jpg
-            1_d3a683b2-d412-4ba4-b320-3a3e77061ebe.jpg
-            
+    +---avatars
+    ¦       1_be749f8c-3afe-453f-b48b-15877c9f5eb8.jpg
+    ¦       1_d3a683b2-d412-4ba4-b320-3a3e77061ebe.jpg
+    ¦       1_f68cc60b-62b7-45e7-99ff-4e4894610a4c.jpg
+    ¦       
+    L---uploads
+        L---defaults

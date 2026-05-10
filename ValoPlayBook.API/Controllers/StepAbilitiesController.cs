@@ -20,7 +20,7 @@ namespace ValoPlayBook.API.Controllers
 
         // PUT: api/stepabilities/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]   // <-- добавлена авторизация
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateStepAbility(int id, UpdateStepAbilityDto dto)
         {
             var stepAbility = await _context.StepAbilities.FindAsync(id);
@@ -30,15 +30,6 @@ namespace ValoPlayBook.API.Controllers
             stepAbility.X = dto.X;
             stepAbility.Y = dto.Y;
             stepAbility.Rotation = dto.Rotation;
-            stepAbility.DurationSteps = dto.DurationSteps;
-
-            if (!string.IsNullOrEmpty(dto.ZoneType) && Enum.TryParse<AbilityZoneType>(dto.ZoneType, out var zoneType))
-                stepAbility.ZoneType = zoneType;
-
-            stepAbility.Radius = dto.Radius;
-            stepAbility.Length = dto.Length;
-            stepAbility.Width = dto.Width;
-            stepAbility.Angle = dto.Angle;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -55,7 +46,6 @@ namespace ValoPlayBook.API.Controllers
             if (ability == null)
                 return BadRequest("Способность не найдена");
 
-            // Проверка, что способность принадлежит указанному агенту
             if (ability.AgentId != dto.AgentId)
                 return BadRequest("Способность не принадлежит данному агенту");
 
@@ -76,18 +66,13 @@ namespace ValoPlayBook.API.Controllers
                 ActivationStepId = dto.ActivationStepId,
                 X = dto.X ?? 512,
                 Y = dto.Y ?? 512,
-                Rotation = dto.Rotation,
-                DurationSteps = dto.DurationSteps,
-                ZoneType = Enum.TryParse<AbilityZoneType>(dto.ZoneType, out var zoneType) ? zoneType : AbilityZoneType.Circle,
-                Radius = dto.Radius,
-                Length = dto.Length,
-                Width = dto.Width,
-                Angle = dto.Angle
+                Rotation = dto.Rotation
             };
 
             _context.StepAbilities.Add(stepAbility);
             await _context.SaveChangesAsync();
 
+            // Формируем DTO, подгружая геометрию из Ability
             var dtoResult = new StepAbilityDto
             {
                 Id = stepAbility.Id,
@@ -99,12 +84,12 @@ namespace ValoPlayBook.API.Controllers
                 X = stepAbility.X,
                 Y = stepAbility.Y,
                 Rotation = stepAbility.Rotation,
-                ZoneType = stepAbility.ZoneType.ToString(),
-                Radius = stepAbility.Radius,
-                Length = stepAbility.Length,
-                Width = stepAbility.Width,
-                Angle = stepAbility.Angle,
-                DurationSteps = stepAbility.DurationSteps
+                ZoneType = ability.ZoneType.ToString(),
+                Radius = ability.DefaultRadius,
+                Length = ability.DefaultLength,
+                Width = ability.DefaultWidth,
+                Angle = ability.DefaultAngle,
+                DurationSteps = ability.DefaultDurationSteps
             };
 
             return CreatedAtAction(nameof(UpdateStepAbility), new { id = stepAbility.Id }, dtoResult);

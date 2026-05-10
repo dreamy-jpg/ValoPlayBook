@@ -30,6 +30,9 @@ namespace ValoPlayBook.API.Helpers
                 OpponentTeamName = entity.OpponentTeamName,
                 YoutubeUrl = entity.YoutubeUrl,
                 ImageUrl = entity.ImageUrl,
+                CreatedByUserId = entity.CreatedByUserId,
+                CreatedByUserName = entity.CreatedByUser?.Username,
+                CreatedByUserAvatar = entity.CreatedByUser?.AvatarUrl,
                 Steps = entity.Steps.OrderBy(s => s.StepNumber).Select(s => new StepDto
                 {
                     Id = s.Id,
@@ -56,12 +59,12 @@ namespace ValoPlayBook.API.Helpers
                         X = sa.X,
                         Y = sa.Y,
                         Rotation = sa.Rotation,
-                        ZoneType = sa.ZoneType.ToString(),
-                        Radius = sa.Radius,
-                        Length = sa.Length,
-                        Width = sa.Width,
-                        Angle = sa.Angle,
-                        DurationSteps = sa.DurationSteps
+                        ZoneType = sa.Ability?.ZoneType.ToString() ?? "Circle",
+                        Radius = sa.Ability?.DefaultRadius,
+                        Length = sa.Ability?.DefaultLength,
+                        Width = sa.Ability?.DefaultWidth,
+                        Angle = sa.Ability?.DefaultAngle,
+                        DurationSteps = sa.Ability?.DefaultDurationSteps ?? 1
                     }).ToList()
                 }).ToList()
             };

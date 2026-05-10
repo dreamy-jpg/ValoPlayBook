@@ -1,6 +1,6 @@
 Структура папок тома home
 Серийный номер тома: BAC0-FF1E
-D:.
+D:\WEB_PROJECT\VALOPLAYBOOK\VALOPLAYBOOK.DATA
 ¦   data.txt
 ¦   ValoPlayBook.Data.csproj
 ¦   
@@ -125,20 +125,8 @@ D:.
 ¦       DbInitializer.Teams.cs
 ¦       
 +---Migrations
-¦       20260414171911_InitialCreate.cs
-¦       20260414171911_InitialCreate.Designer.cs
-¦       20260419132106_AddStepAbilitiesAndMaxCharges.cs
-¦       20260419132106_AddStepAbilitiesAndMaxCharges.Designer.cs
-¦       20260419163228_AddIsAttackerToStepPosition.cs
-¦       20260419163228_AddIsAttackerToStepPosition.Designer.cs
-¦       20260420130635_AddZoneTypeFields.cs
-¦       20260420130635_AddZoneTypeFields.Designer.cs
-¦       20260422211046_AddUserAndRefreshToken.cs
-¦       20260422211046_AddUserAndRefreshToken.Designer.cs
-¦       20260423151128_AddUserAvatarUrl.cs
-¦       20260423151128_AddUserAvatarUrl.Designer.cs
-¦       20260428175111_AddImageUrlToDefault.cs
-¦       20260428175111_AddImageUrlToDefault.Designer.cs
+¦       20260508162730_InitialCreate.cs
+¦       20260508162730_InitialCreate.Designer.cs
 ¦       AppDbContextModelSnapshot.cs
 ¦       
 L---obj

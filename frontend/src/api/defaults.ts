@@ -1,4 +1,4 @@
-import type { DefaultDto, DefaultListItemDto, PagedResult, MapDto, TeamDto, CommentDto, CreateCommentDto, UpdateStepAbilityDto, AgentDto, AbilityDto } from '../types';
+import type { DefaultDto, DefaultListItemDto, PagedResult, MapDto, TeamDto, CommentDto, CreateCommentDto, UpdateStepAbilityDto, AgentDto, PositionDto, StepDto, StepAbilityDto } from '../types';
 import { getAccessToken, fetchWithAuth } from './auth';
 
 const API_BASE = '/api';
@@ -37,7 +37,7 @@ export async function createDefault(data: {
   roundNumber?: number;
   opponentTeamName?: string;
   youtubeUrl?: string;
-  imageUrl?: string; // новое
+  imageUrl?: string;
 }): Promise<DefaultDto> {
   const response = await fetchWithAuth(`${API_BASE}/defaults`, {
     method: 'POST',
@@ -180,12 +180,7 @@ export async function createStepAbility(
     activationStepId: number;
     x?: number;
     y?: number;
-    zoneType?: string;
-    radius?: number;
-    length?: number;
-    width?: number;
-    angle?: number;
-    durationSteps?: number;
+    rotation?: number;
   }
 ): Promise<StepAbilityDto> {
   const response = await fetchWithAuth(`${API_BASE}/stepabilities`, {
@@ -235,4 +230,30 @@ export async function fetchAgents(): Promise<AgentDto[]> {
     throw new Error(`Ошибка загрузки агентов: ${response.status}`);
   }
   return response.json();
+}
+
+export async function uploadDefaultImage(id: number, file: File): Promise<{ imageUrl: string }> {
+  const formData = new FormData();
+  formData.append('file', file);
+  const response = await fetchWithAuth(`${API_BASE}/defaults/${id}/image`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || 'Ошибка загрузки изображения');
+  }
+  return response.json();
+}
+
+export async function updateComment(
+  defaultId: number,
+  commentId: number,
+  content: string
+): Promise<void> {
+  await fetchWithAuth(`${API_BASE}/defaults/${defaultId}/comments/${commentId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content }),
+  });
 }
